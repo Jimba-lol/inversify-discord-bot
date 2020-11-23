@@ -19,9 +19,11 @@
 
 ### Bot Commands:
 In order to interact with the bot, you must mention it, followed by command + options.
-examples:
+###### examples:
 @Revrbr8 help
+
 @Revrbr8 roblox https://www.roblox.com/games/0123456789
-###### Current commands:
-`help - sends you to this page so that you can get an overview of all commands`
-`roblox - adds the linked game to the roblox games queue`
+#### Current commands:
+`help` - sends you to this page so that you can get an overview of all commands
+
+`roblox` - adds the linked game to the roblox games queue
