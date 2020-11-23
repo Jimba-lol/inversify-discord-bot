@@ -26,9 +26,9 @@ export class Bot {
             if (message.author.bot || !message.mentions.has(this.client.user)) return;
 
             this.messageResponder.handle(message).then(() => {
-                console.log("Response sent");
+                console.log("Response sent.");
             }).catch(() => {
-                console.log("Reponse not sent.");
+                console.log("An exception occurred.");
             });
         });
         this.client.on('voiceStateUpdate', (oldState:VoiceState, newState:VoiceState) => {

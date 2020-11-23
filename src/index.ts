@@ -13,3 +13,10 @@ bot.logIn().then(() => {
 }).catch((error) => {
     console.log('error logging in: ' + error)
 });
+
+// Express
+/*
+let express = container.get<ExpressServer>(SYMBOLS.ExpressServer);
+express.containerLoad();
+express.serverStart();
+*/
