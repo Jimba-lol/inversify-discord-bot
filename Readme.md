@@ -1,5 +1,5 @@
 # REVerbr8
-<<<<<<< HEAD
+
 ### Running the Discord Bot / Express Application:
 ###### to compile in watch mode:
 npm run watch
@@ -39,4 +39,3 @@ to run: `npm run start`
 to test: `ng test`
 
 to run (compiles automatically): `ng serve`
->>>>>>> ffd34434c87653bb693204d6a6c0136ce4a0430d
