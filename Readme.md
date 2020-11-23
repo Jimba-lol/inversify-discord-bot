@@ -1,4 +1,5 @@
 # REVerbr8
+<<<<<<< HEAD
 ### Running the Discord Bot / Express Application:
 ###### to compile in watch mode:
 npm run watch
@@ -24,3 +25,18 @@ examples:
 ###### Current commands:
 help - sends you to this page so that you can get an overview of all commands
 roblox - adds the linked game to the roblox games queue
+=======
+### For the Discord Bot Application
+to compile in watch mode: `npm run watch`
+
+to compile: `npm run comp`
+
+to test: `npm run test`
+
+to run: `npm run start`
+
+### For the Angular Application
+to test: `ng test`
+
+to run (compiles automatically): `ng serve`
+>>>>>>> ffd34434c87653bb693204d6a6c0136ce4a0430d
