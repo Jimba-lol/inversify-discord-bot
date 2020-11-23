@@ -11,14 +11,14 @@ export class MongoDBConnection {
         if (this.isConnected) {
             return result(this.db);
         } else {
-            this.connect((error, db: Db) => {
+            this.connect((error: Error, db: Db) => {
                 return result(this.db);
             });
         }
     }
 
-    public static connect(result: (error, db: Db) => void) {
-        MongoClient.connect(url, (err, client) => {
+    public static connect(result: (error: Error, db: Db) => void) {
+        MongoClient.connect(url, (err: Error, client) => {
             this.db = client.db(dbName);
             this.isConnected = true;
             return result(err, this.db);

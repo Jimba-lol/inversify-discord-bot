@@ -19,6 +19,6 @@ export class RobloxGame implements RobloxGameInterface {
         public gameGenre: string,
         public requestorID: string,
         public timestamp: number,
-        public id?: string
+        public _id?: string
     ) {}
 }

@@ -12,8 +12,23 @@ export class RobloxGameService {
     ) {
         this.mongo = mongo;
     }
+    
+    public getById(id: string): Promise<RobloxGame> {
+        return new Promise<RobloxGame>((resolve, reject) => {
+            this.mongo.find('RobloxGame', id, (error: Error, game: RobloxGame) => {
+                resolve(game);
+            })
+        })
+    }
 
-    public getRobloxGames(): Promise<RobloxGame[]> {
+    public getLatest(): Promise<RobloxGame> {
+        return new Promise<RobloxGame>((resolve, reject) => {
+            // this.mongo.
+            // TODO, IN PROGRESS
+        })
+    }
+
+    public getAll(): Promise<RobloxGame[]> {
         return new Promise<RobloxGame[]>((resolve, reject) => {
             this.mongo.find('RobloxGame', {}, (error, data: RobloxGame[]) => {
                 resolve(data);
@@ -21,11 +36,24 @@ export class RobloxGameService {
         });
     }
 
-    public postGame(game: RobloxGame): Promise<RobloxGame> {
+    public post(game: RobloxGame): Promise<RobloxGame> {
         return new Promise<RobloxGame>((resolve, reject) => {
             this.mongo.create('RobloxGame', game, (error: Error, game: RobloxGame) => {
                 resolve(game);
             })
         })
+    }
+
+    // does this need an ID input as well?
+    public patch(game: RobloxGame): Promise<RobloxGame> {
+
+    }
+
+    public deleteByID(id: string): Promise<RobloxGame> {
+
+    }
+
+    public deleteLatest(): Promise<RobloxGame> {
+
     }
 }
