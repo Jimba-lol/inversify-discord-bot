@@ -11,9 +11,8 @@ import { RobloxQueueService } from './bot/services/roblox-queue-service';
 
 // Express Imports
 import { ExpressServer } from './express/express-server';
-import { RobloxGameService } from './express/services/roblox-game-service';
+import { RobloxGameService } from './express/services/roblox.service';
 import { RobloxGameBuilderService } from './bot/services/roblox-game-builder-service';
-import { RobloxGame } from './model/roblox-game';
 
 let container = new Container();
 

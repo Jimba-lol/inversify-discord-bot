@@ -1,7 +1,6 @@
 import { Db, ObjectID } from 'mongodb';
 import { injectable } from 'inversify';
 import { MongoDBConnection } from './connection';
-import { RobloxGame } from '../../../model/roblox-game';
 
 /**
  * MongoDB Client
@@ -109,6 +108,5 @@ export class MongoDBClient {
                 return result(err, remove);
             });
         });
-        
     }
 }

@@ -2,7 +2,7 @@ import { Container, injectable } from 'inversify';
 import { InversifyExpressServer } from 'inversify-express-utils';
 import { makeLoggerMiddleware } from 'inversify-logger-middleware';
 import { MongoDBClient } from './utils/mongodb/client';
-import { RobloxGameService } from './services/roblox-game-service';
+import { RobloxGameService } from './services/roblox.service';
 import * as bodyParser from 'body-parser';
 import * as helmet from 'helmet';
 

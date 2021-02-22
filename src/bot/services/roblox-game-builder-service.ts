@@ -1,7 +1,6 @@
 import { injectable } from 'inversify';
 import { get } from 'https';
 import { RobloxGame } from '../../model/roblox-game';
-import { ClientRequest } from 'http';
 
 /**
  * Service for creation of RobloxGame objects with appropriate information.
