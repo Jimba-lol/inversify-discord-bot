@@ -18,6 +18,8 @@ export class Bot {
 
 	public listen(): Promise<string> {
 		this.client.on('messageCreate', (message: Message) => {
+			if (message.author.bot)
+				return;
 			console.log("message received, contents: " + message.content);
 		});
 		return this.client.login(this.token);
