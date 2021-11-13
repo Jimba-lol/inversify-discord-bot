@@ -2,10 +2,16 @@ import { inject, injectable } from 'inversify';
 import { SYMBOLS } from '../symbols';
 
 import { CommandInteraction } from 'discord.js';
+import { MockCommand } from './command/mock-command';
 
 @injectable()
 export class CommandService {
-	constructor() {}
+	mockCommand: MockCommand;
+	constructor(
+		@inject(SYMBOLS.MockCommand) mockCommand: MockCommand,
+	) {
+		this.mockCommand = mockCommand;
+	}
 
 	/**
 	 * Handles slash commands.
@@ -14,7 +20,7 @@ export class CommandService {
 	public handleCommand(interaction: CommandInteraction) {
 		switch (interaction.commandName) {
 			case 'mock':
-				//something
+				interaction.reply(this.mockCommand.mock(interaction.options.getString('input')));
 				break;
 		}
 	}
