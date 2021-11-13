@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 
 @injectable()
-export class MockCommand {
+export class MockMessageInteraction {
 	public mock(content: string): string {
 		let result = ":mock: ";
 		let contentChars = [...content];

@@ -1,26 +1,28 @@
 import { inject, injectable } from 'inversify';
 import { SYMBOLS } from './symbols';
 
-import { Client, Message, Interaction, CommandInteraction } from 'discord.js';
+import { Client, Message, Interaction, CommandInteraction, MessageComponent } from 'discord.js';
 
-import { CommandService } from './service/command-service';
 import { MessageService } from './service/message-service';
+import { InteractionService } from './service/interaction-service';
 
 @injectable()
 export class Bot {
 	private client: Client;
 	private readonly token: string;
-	private commandService: CommandService;
+	private interactionService: InteractionService;
 	private messageService: MessageService;
 
 	constructor(
 		@inject(SYMBOLS.Client) client: Client,
 		@inject(SYMBOLS.Token) token: string,
-		@inject(SYMBOLS.CommandService) commandService: CommandService,
+		@inject(SYMBOLS.InteractionService) interactionService: InteractionService,
 		@inject(SYMBOLS.MessageService) messageService: MessageService,
 	) {
 		this.client = client;
 		this.token = token;
+		this.interactionService = interactionService;
+		this.messageService = messageService;
 	}
 
 	public listen(): Promise<string> {
@@ -30,9 +32,7 @@ export class Bot {
 			this.messageService.handleMessage(message);
 		});
 		this.client.on('interaction', (interaction: Interaction) => {
-			if (!interaction.isCommand())
-				return;
-			this.commandService.handleCommand(interaction as CommandInteraction);
+			this.interactionService.handleInteraction(interaction);
 		});
 		return this.client.login(this.token);
 	}

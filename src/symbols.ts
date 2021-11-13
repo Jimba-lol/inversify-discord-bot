@@ -3,8 +3,10 @@ export const SYMBOLS = {
 	Client: Symbol("Client"),
 	Token: Symbol("Token"),
 
-	CommandService: Symbol("CommandService"),
-	MockCommand: Symbol("MockCommand"),
+	InteractionService: Symbol("InteractionService"),
+	MessageInteractionService: Symbol("MessageInteractionService"),
+	CommandInteractionService: Symbol("CommandInteractionService"),
+	MockMessageInteraction: Symbol("MockMessageInteraction"),
 
 	MessageService: Symbol("MessageService"),
 }
