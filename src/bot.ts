@@ -1,4 +1,5 @@
 import { Client, Message } from 'discord.js';
+import { CommandService } from './service/command-service';
 import { inject, injectable } from 'inversify';
 import { SYMBOLS } from './symbols';
 // import { MessageResponder } from './service/message-responder';
@@ -10,7 +11,8 @@ export class Bot {
 
 	constructor(
 		@inject(SYMBOLS.Client) client: Client,
-		@inject(SYMBOLS.Token) token: string
+		@inject(SYMBOLS.Token) token: string,
+		@inject(SYMBOLS.CommandService) commandService: CommandService
 	) {
 		this.client = client;
 		this.token = token;
@@ -22,6 +24,7 @@ export class Bot {
 				return;
 			console.log("message received, contents: " + message.content);
 		});
+
 		return this.client.login(this.token);
 	}
 }
