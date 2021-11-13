@@ -3,4 +3,5 @@ export const SYMBOLS = {
 	Client: Symbol("Client"),
 	Token: Symbol("Token"),
 	CommandService: Symbol("CommandService"),
+	MessageService: Symbol("MessageService"),
 }

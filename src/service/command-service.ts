@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
 import { SYMBOLS } from '../symbols';
 
-import { Interaction } from 'discord.js';
+import { CommandInteraction } from 'discord.js';
 
 @injectable()
 export class CommandService {
@@ -11,7 +11,7 @@ export class CommandService {
 	 * Handles slash commands.
 	 * @param interaction The slash command we're handling.
 	 */
-	public handleCommand(interaction: Interaction) {
+	public handleCommand(interaction: CommandInteraction) {
 		switch (interaction.commandName) {
 			case 'mock':
 				//something
