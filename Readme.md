@@ -4,7 +4,7 @@
 ###### to compile in watch mode:
 `npm run watch`
 ###### to compile:
-`npm run comp`
+`npm run build`
 ###### to test:
 `npm run test`
 ###### to run:
