@@ -1,4 +1,4 @@
-# REVerbr8
+# My Discord Bot
 
 ### Running the Discord Bot / Express Application:
 ###### to compile in watch mode:
