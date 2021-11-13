@@ -1,30 +1,21 @@
 import { inject, injectable } from 'inversify';
 import { SYMBOLS } from '../symbols';
 
-import * as REST from '@discordjs/rest';
-import * as Routes from 'discord-api-types/v9';
-
-import * as fs from 'fs';
+import { Interaction } from 'discord.js';
 
 @injectable()
 export class CommandService {
-	private readonly token: string;
-	guildId = '42690166732525568';
-	commands = [];
-	commandFiles = fs.readdirSync('../commands').filter(file => file.endsWith('.js'));
+	constructor() {}
 
-	constructor(
-		@inject(SYMBOLS.Token) token: string,
-	) {
-		this.token = token;
-	}
-
-	// This isn't operating in a typescript way. need to change.
-	public registerCommands() {
-		for (const file of this.commandFiles) {
-			const command = require(`./commands/${file}`);
-			this.commands.push(command.data.toJSON());
+	/**
+	 * Handles slash commands.
+	 * @param interaction The slash command we're handling.
+	 */
+	public handleCommand(interaction: Interaction) {
+		switch (interaction.commandName) {
+			case 'mock':
+				//something
+				break;
 		}
-		// WIP
 	}
 }
