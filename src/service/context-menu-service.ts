@@ -20,6 +20,8 @@ export class ContextMenuService {
 					interaction.reply(this.mockMessageInteraction.mock(res.content));
 				});
 				break;
+			case "Highlight":
+				// copy message to the highlights channel
 		}
 	}
 }

@@ -16,6 +16,18 @@ export class CommandService {
 			case 'ping':
 				interaction.reply("pong :{D");
 				break;
+			case 'join':
+				// join voice
+				break;
+			case 'leave':
+				// leave voice
+				break;
+			case 'youtube':
+				// play youtube audio
+				break;
+			case 'sound':
+				// play sound
+				break;
 		}
 	}
 }
