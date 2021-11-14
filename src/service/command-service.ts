@@ -13,9 +13,6 @@ export class CommandService {
 	 */
 	public handleCommand(interaction: CommandInteraction) {
 		switch (interaction.commandName) {
-			case 'ping':
-				interaction.reply("pong :{D");
-				break;
 			case 'join':
 				// join voice
 				break;
@@ -27,6 +24,9 @@ export class CommandService {
 				break;
 			case 'sound':
 				// play sound
+				break;
+			case 'spam':
+				// spam any time someone speaks
 				break;
 		}
 	}

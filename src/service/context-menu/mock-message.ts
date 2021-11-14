@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 
 @injectable()
-export class MockMessageInteraction {
+export class MockMessage {
 	public mock(content: string): string {
 		var result: string = "<:mock:510964804014571530> ";
 		[...content].forEach((e, i) => {

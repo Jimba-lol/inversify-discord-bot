@@ -9,7 +9,7 @@ import { MessageService } from './service/message-service';
 import { InteractionService } from './service/interaction-service';
 import { ContextMenuService } from './service/context-menu-service';
 import { CommandService } from './service/command-service';
-import { MockMessageInteraction } from './service/command/mock-message-interaction';
+import { MockMessage } from './service/context-menu/mock-message';
 
 let container = new Container();
 let clientOptions: ClientOptions = {
@@ -28,6 +28,6 @@ container.bind<MessageService>(SYMBOLS.MessageService).to(MessageService).inSing
 container.bind<InteractionService>(SYMBOLS.InteractionService).to(InteractionService).inSingletonScope();
 container.bind<ContextMenuService>(SYMBOLS.ContextMenuService).to(ContextMenuService).inSingletonScope();
 container.bind<CommandService>(SYMBOLS.CommandService).to(CommandService).inSingletonScope();
-container.bind<MockMessageInteraction>(SYMBOLS.MockMessageInteraction).to(MockMessageInteraction).inSingletonScope();
+container.bind<MockMessage>(SYMBOLS.MockMessage).to(MockMessage).inSingletonScope();
 
 export default container;
