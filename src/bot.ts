@@ -31,7 +31,7 @@ export class Bot {
 				return;
 			this.messageService.handleMessage(message);
 		});
-		this.client.on('interaction', (interaction: Interaction) => {
+		this.client.on('interactionCreate', (interaction: Interaction) => {
 			this.interactionService.handleInteraction(interaction);
 		});
 		return this.client.login(this.token);

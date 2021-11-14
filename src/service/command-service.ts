@@ -4,7 +4,7 @@ import { SYMBOLS } from '../symbols';
 import { CommandInteraction } from 'discord.js';
 
 @injectable()
-export class CommandInteractionService {
+export class CommandService {
 	constructor() {}
 
 	/**

@@ -1,30 +1,27 @@
-import { CommandInteraction, Interaction, MessageComponentInteraction } from 'discord.js';
+import { CommandInteraction, Interaction, ContextMenuInteraction } from 'discord.js';
 import { inject, injectable } from 'inversify';
 import { SYMBOLS } from '../symbols';
-import { CommandInteractionService } from './command-interaction-service';
-import { MessageInteractionService } from './message-interaction-service';
+import { CommandService } from './command-service';
+import { ContextMenuService } from './context-menu-service';
 
 @injectable()
 export class InteractionService {
-	commandInteractionService: CommandInteractionService;
-	messageInteractionService: MessageInteractionService;
+	commandService: CommandService;
+	contextMenuService: ContextMenuService;
 
 	constructor(
-		@inject(SYMBOLS.MessageInteractionService) messageInteractionService: MessageInteractionService,
-		@inject(SYMBOLS.CommandInteractionService) commandInteractionService: CommandInteractionService
+		@inject(SYMBOLS.ContextMenuService) contextMenuService: ContextMenuService,
+		@inject(SYMBOLS.CommandService) commandService: CommandService
 	) {
-		this.messageInteractionService = messageInteractionService;
-		this.commandInteractionService = commandInteractionService;
+		this.contextMenuService = contextMenuService;
+		this.commandService = commandService;
 	}
 
 	public handleInteraction(interaction: Interaction) {
-		switch(interaction.type) {
-			case "APPLICATION_COMMAND":
-				this.commandInteractionService.handleCommand(interaction as CommandInteraction);
-				break;
-			case "MESSAGE_COMPONENT":
-				this.messageInteractionService.handleMessage(interaction as MessageComponentInteraction);
-				break;
+		if (interaction.isCommand()) {
+			this.commandService.handleCommand(interaction as CommandInteraction);
+		} else if (interaction.isContextMenu()) {
+			this.contextMenuService.handleInteraction(interaction as ContextMenuInteraction);
 		}
 	}
 }

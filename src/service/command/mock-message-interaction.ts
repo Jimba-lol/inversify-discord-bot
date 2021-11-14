@@ -3,22 +3,21 @@ import { injectable } from "inversify";
 @injectable()
 export class MockMessageInteraction {
 	public mock(content: string): string {
-		let result = ":mock: ";
-		let contentChars = [...content];
-		for (let char in contentChars) {
-			result += this.toRandomCase(char);
-		}
+		var result: string = "<:mock:510964804014571530> ";
+		[...content].forEach((e, i) => {
+			result += this.toRandomCase(e);
+		});
 		return result;
 	}
 
-	private toRandomCase(char: string) {
-		if (char !== " ") {
+	private toRandomCase(letter: string): string {
+		if (letter !== " ") {
 			if (Math.round(Math.random()) == 1) {
-				char.toUpperCase();
+				letter = letter.toUpperCase();
 			} else {
-				char.toLowerCase();
+				letter = letter.toLowerCase();
 			}
 		}
-		return char;
+		return letter;
 	}
 }

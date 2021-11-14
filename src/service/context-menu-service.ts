@@ -1,10 +1,10 @@
-import { MessageComponentInteraction } from 'discord.js';
+import { ContextMenuInteraction } from 'discord.js';
 import { inject, injectable } from 'inversify';
 import { SYMBOLS } from '../symbols';
 import { MockMessageInteraction } from './command/mock-message-interaction';
 
 @injectable()
-export class MessageInteractionService {
+export class ContextMenuService {
 	mockMessageInteraction: MockMessageInteraction;
 
 	constructor(
@@ -13,10 +13,12 @@ export class MessageInteractionService {
 		this.mockMessageInteraction = mockMessageInteraction;
 	}
 
-	public handleMessage(messageInteraction: MessageComponentInteraction) {
-		switch(messageInteraction.customId) {
+	public handleInteraction(interaction: ContextMenuInteraction) {
+		switch (interaction.commandName) {
 			case "Mock":
-				messageInteraction.channel.send(this.mockMessageInteraction.mock(messageInteraction.message.content));
+				interaction.channel.messages.fetch(interaction.targetId).then((res) => {
+					interaction.reply(this.mockMessageInteraction.mock(res.content));
+				});
 				break;
 		}
 	}
