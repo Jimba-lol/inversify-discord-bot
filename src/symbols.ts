@@ -7,6 +7,7 @@ export const SYMBOLS = {
 	ContextMenuService: Symbol("ContextMenuService"),
 	CommandService: Symbol("CommandService"),
 	MockMessage: Symbol("MockMessage"),
+	VoiceService: Symbol("VoiceService"),
 
 	MessageService: Symbol("MessageService"),
 }
