@@ -8,9 +8,9 @@ export class ContextMenuService {
 	mockMessage: MockMessage;
 
 	constructor(
-		@inject(SYMBOLS.MockMessageInteraction) mockMessageInteraction: MockMessage,
+		@inject(SYMBOLS.MockMessage) mockMessage: MockMessage,
 	) {
-		this.mockMessage = mockMessageInteraction;
+		this.mockMessage = mockMessage;
 	}
 
 	public handleInteraction(interaction: ContextMenuInteraction) {

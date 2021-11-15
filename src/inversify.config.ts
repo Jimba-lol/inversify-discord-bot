@@ -29,6 +29,7 @@ container.bind<MessageService>(SYMBOLS.MessageService).to(MessageService).inSing
 container.bind<InteractionService>(SYMBOLS.InteractionService).to(InteractionService).inSingletonScope();
 container.bind<ContextMenuService>(SYMBOLS.ContextMenuService).to(ContextMenuService).inSingletonScope();
 container.bind<CommandService>(SYMBOLS.CommandService).to(CommandService).inSingletonScope();
+
 container.bind<MockMessage>(SYMBOLS.MockMessage).to(MockMessage).inSingletonScope();
 container.bind<VoiceService>(SYMBOLS.VoiceService).to(VoiceService).inSingletonScope();
 
