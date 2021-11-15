@@ -4,7 +4,7 @@ import { SYMBOLS } from '../../symbols';
 import { Client, StageChannel, VoiceChannel, VoiceState } from 'discord.js';
 import { VoiceConnection, joinVoiceChannel } from '@discordjs/voice';
 
-
+// TODO only keeps track of a single voice connection for now. Need to find out how to do this better.
 @injectable()
 export class VoiceService {
 	private client: Client;
