@@ -18,24 +18,31 @@ export class CommandService {
 	 * Handles slash commands.
 	 * @param interaction The slash command we're handling.
 	 */
-	public handleCommand(interaction: CommandInteraction) {
+	public async handleCommand(interaction: CommandInteraction) {
 		switch (interaction.commandName) {
 			case 'join':
-				interaction.reply("Attempting to join your channel...");
-				this.voiceService.joinVoice((interaction.member as GuildMember).voice.channel)
+				interaction.reply({ content: "Attempting to join your channel...", ephemeral: true });
+				this.voiceService.joinVoice(interaction)
 				.then(() => interaction.followUp("<:hell:490044821843738624>"))
-				.catch((error) => interaction.followUp(error));
+				.catch((error) => interaction.followUp({ content: error, ephemeral: true }));
 				break;
 			case 'leave':
-				if (this.voiceService.leaveVoice()) {
-					interaction.reply("<:thomas:464217303211442187> Goobye");
-				} else {
-					interaction.reply("<:angryVergil:470440004234117132> I need to be in a voice channel in order to leave one.");
-				}
+				this.voiceService.leaveVoice(interaction);
 				break;
-			case 'youtube':
-				// play youtube audio
-				// TODO WIP
+			case 'queue':
+				this.voiceService.youtubeQueue(interaction);
+				break;
+			case 'play':
+				this.voiceService.playYoutube(interaction);
+				break;
+			case 'pause':
+				this.voiceService.pauseYoutube(interaction);
+				break;
+			case 'resume':
+				this.voiceService.resumeYoutube(interaction);
+				break;
+			case 'skip':
+				this.voiceService.skipYoutube(interaction);
 				break;
 			case 'sound':
 				// play sound
