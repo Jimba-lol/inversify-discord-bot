@@ -4,14 +4,23 @@ import { SYMBOLS } from '../symbols';
 import { CommandInteraction, GuildMember } from 'discord.js';
 
 import { VoiceService } from './voice/voice-service';
+import { JoinCommand } from './command/join-command';
+import { Command } from './command/command';
+import { LeaveCommand } from './command/leave-command';
 
 @injectable()
 export class CommandService {
+	private commandList: Array<Command> = [];
+
 	private voiceService: VoiceService;
 	constructor(
 		@inject(SYMBOLS.VoiceService) voiceService: VoiceService,
+		@inject(SYMBOLS.JoinCommand) joinCommand: JoinCommand,
+		@inject(SYMBOLS.LeaveCommand) leaveCommand: LeaveCommand
 	) {
 		this.voiceService = voiceService;
+		this.commandList.push(joinCommand);
+		this.commandList.push(leaveCommand);
 	}
 
 	/**
@@ -19,37 +28,7 @@ export class CommandService {
 	 * @param interaction The slash command we're handling.
 	 */
 	public async handleCommand(interaction: CommandInteraction) {
-		switch (interaction.commandName) {
-			case 'join':
-				interaction.reply({ content: "Attempting to join your channel...", ephemeral: true });
-				this.voiceService.joinVoice(interaction)
-				.then(() => interaction.followUp("<:hell:490044821843738624>"))
-				.catch((error) => interaction.followUp({ content: error, ephemeral: true }));
-				break;
-			case 'leave':
-				this.voiceService.leaveVoice(interaction);
-				break;
-			case 'queue':
-				this.voiceService.youtubeQueue(interaction);
-				break;
-			case 'play':
-				this.voiceService.playYoutube(interaction);
-				break;
-			case 'pause':
-				this.voiceService.pauseYoutube(interaction);
-				break;
-			case 'resume':
-				this.voiceService.resumeYoutube(interaction);
-				break;
-			case 'skip':
-				this.voiceService.skipYoutube(interaction);
-				break;
-			case 'sound':
-				// play sound
-				break;
-			case 'spam':
-				// spam any time someone speaks
-				break;
-		}
+		const command = this.commandList.find(command => interaction.commandName === command.data.name);
+		if (command) { command.execute(interaction); }
 	}
 }

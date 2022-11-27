@@ -17,7 +17,7 @@ export class VoiceService {
 		return new Promise((resolve, reject) => {
 			if (interaction.member instanceof GuildMember && interaction.member.voice.channel) {
 				try {
-					let subscription = new VoiceSubscription(joinVoiceChannel({
+					const subscription = new VoiceSubscription(joinVoiceChannel({
 						channelId: interaction.member.voice.channel.id,
 						guildId: interaction.member.voice.channel.guildId,
 						//@ts-ignore
@@ -35,26 +35,20 @@ export class VoiceService {
 		});
 	}
 
-	public leaveVoice(interaction: CommandInteraction) {
-		let subscription = this.voiceSubscriptionArray.get(interaction.guildId);
-		if (!subscription) {
-			interaction.reply("<:angryVergil:470440004234117132> I need to be in a voice channel in order to leave one.");
-			return;
-		}
-		subscription.voiceConnection.destroy();
-		this.voiceSubscriptionArray.delete(interaction.guildId);
-		interaction.reply("<:thomas:464217303211442187> Goobye");
+	public leaveVoice(interaction: CommandInteraction): Promise<string> {
+		return new Promise((resolve, reject) => {
+			const subscription = this.voiceSubscriptionArray.get(interaction.guildId);
+			if (!subscription) {
+				reject("<:angryVergil:470440004234117132> I need to be in a voice channel in order to leave one.");
+				return;
+			} else {
+				subscription.voiceConnection.destroy();
+				resolve(":wave:<:thomas:464217303211442187>");
+			}
+		});
 	}
 
-	public youtubeQueue(interaction: CommandInteraction) {
-		let subscription = this.voiceSubscriptionArray.get(interaction.guildId);
-		if (!subscription) {
-			interaction.reply("<:angryVergil:470440004234117132> I'm not even in voice.");
-			return;
-		}
-	}
-
-	public pauseYoutube(interaction: CommandInteraction) {
+	public queueTrack(interaction: CommandInteraction) {
 		let subscription = this.voiceSubscriptionArray.get(interaction.guildId);
 		if (!subscription) {
 			interaction.reply("<:angryVergil:470440004234117132> I'm not even in voice.");
@@ -62,7 +56,7 @@ export class VoiceService {
 		}
 	}
 
-	public resumeYoutube(interaction: CommandInteraction) {
+	public pauseTrack(interaction: CommandInteraction) {
 		let subscription = this.voiceSubscriptionArray.get(interaction.guildId);
 		if (!subscription) {
 			interaction.reply("<:angryVergil:470440004234117132> I'm not even in voice.");
@@ -70,7 +64,7 @@ export class VoiceService {
 		}
 	}
 
-	public skipYoutube(interaction: CommandInteraction) {
+	public resumeTrack(interaction: CommandInteraction) {
 		let subscription = this.voiceSubscriptionArray.get(interaction.guildId);
 		if (!subscription) {
 			interaction.reply("<:angryVergil:470440004234117132> I'm not even in voice.");
@@ -78,36 +72,61 @@ export class VoiceService {
 		}
 	}
 
-	public playYoutube(interaction: CommandInteraction) {
+	public skipTrack(interaction: CommandInteraction) {
+		let subscription = this.voiceSubscriptionArray.get(interaction.guildId);
+		if (!subscription) {
+			interaction.reply("<:angryVergil:470440004234117132> I'm not even in voice.");
+			return;
+		}
+	}
+
+	// Will most likely want to rehaul this and the helper method.
+	// Will want to create new type 'FileTrack' which can 
+	public playTrack(interaction: CommandInteraction): void {
 		const url = interaction.options.get('url')!.value! as string;
 		let subscription = this.voiceSubscriptionArray.get(interaction.guildId);
 		if (!subscription) {
 			if (interaction.member instanceof GuildMember && interaction.member.voice.channel)
 				this.joinVoice(interaction)
-				.then((res) => interaction.reply(this.playYoutubeHelper(interaction, res, url)))
+				.then((res) => this.playTrackHelper(interaction, res, url))
 				.catch((error) => interaction.reply(error));
 		} else {
-			interaction.reply(this.playYoutubeHelper(interaction, subscription, url));
+			this.playTrackHelper(interaction, subscription, url);
 		}
 	}
 
-	private async playYoutubeHelper(interaction: CommandInteraction, subscription: VoiceSubscription, url: string): string {
+	// may want to remove awaits. try to approach this in a different way.
+	// obv. this will still need to be async, though.
+	private async playTrackHelper(
+				interaction: CommandInteraction, 
+				subscription: VoiceSubscription, url: string): Promise<void> {
 		await entersState(subscription.voiceConnection, VoiceConnectionStatus.Ready, 20e3)
 		.catch((err) => {
 			console.warn(err);
 			return "Something went wrong while joining your channel.";
 		});
-		const track = await YoutubeTrack.from(url, {
-			onStart() {
-				interaction.followUp({ content: "Now Playing "}) // TODO
-			}
-		})
-
+		try {
+			const track = await YoutubeTrack.from(url, {
+				onStart() {
+					interaction.followUp({ content: "Now Playing", ephemeral: true }).catch(console.warn);
+				},
+				onFinish() {
+					interaction.followUp({ content: "Now Finished", ephemeral: true }).catch(console.warn);
+				},
+				onError(err) {
+					console.warn(err);
+					interaction.followUp({ content: `Error: ${err.message}`, ephemeral: true }).catch(console.warn);
+				}
+			});
+			subscription.enqueue(track);
+			await interaction.followUp(`Enqueued **${track.title}**`);
+		} catch (err) {
+			console.warn(err);
+			interaction.followUp('An error has occurred while trying to play the track.');
+		}
 	}
 
-	public playSound() { // need to be careful with this. don't allow ../
-
 	public spamVoice() {
-
+		// Detect when someone is speaking, and while they are, play a loud sound
 	}
 }

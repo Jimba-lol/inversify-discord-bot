@@ -10,4 +10,7 @@ export const SYMBOLS = {
 	VoiceService: Symbol('VoiceService'),
 
 	MockMessage: Symbol('MockMessage'),
+
+	JoinCommand: Symbol('JoinCommand'),
+	LeaveCommand: Symbol('LeaveCommand'),
 }

@@ -11,6 +11,8 @@ import { ContextMenuService } from './service/context-menu-service';
 import { CommandService } from './service/command-service';
 import { MockMessage } from './service/context-menu/mock-message';
 import { VoiceService } from './service/voice/voice-service';
+import { JoinCommand } from './service/command/join-command';
+import { LeaveCommand } from './service/command/leave-command';
 
 let container = new Container();
 let clientOptions: ClientOptions = {
@@ -30,5 +32,8 @@ container.bind<InteractionService>(SYMBOLS.InteractionService).to(InteractionSer
 container.bind<MessageService>(SYMBOLS.MessageService).to(MessageService).inSingletonScope();
 container.bind<MockMessage>(SYMBOLS.MockMessage).to(MockMessage).inSingletonScope();
 container.bind<VoiceService>(SYMBOLS.VoiceService).to(VoiceService).inSingletonScope();
+
+container.bind<JoinCommand>(SYMBOLS.JoinCommand).to(JoinCommand).inSingletonScope();
+container.bind<LeaveCommand>(SYMBOLS.LeaveCommand).to(LeaveCommand).inSingletonScope();
 
 export default container;
