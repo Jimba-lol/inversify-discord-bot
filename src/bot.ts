@@ -33,6 +33,15 @@ export class Bot {
 		this.client.on('interactionCreate', (interaction: Interaction) => {
 			this.interactionService.handleInteraction(interaction);
 		});
+		this.client.on('ready', () => {
+			this.client.user.setPresence({
+				status: 'online',
+				activities: [{
+					name: 'YOU... aahahahaaa',
+					type: 'WATCHING'
+				}]
+			});
+		});
 		return this.client.login(this.token);
 	}
 }
