@@ -3,7 +3,7 @@ import { CommandInteraction } from 'discord.js';
 import { injectable, inject } from 'inversify';
 import { SYMBOLS } from '../../symbols';
 import { VoiceService } from '../voice/voice-service';
-import { Command } from './command';
+import { Command } from './_command';
 
 @injectable()
 export class LeaveCommand implements Command {
@@ -17,6 +17,7 @@ export class LeaveCommand implements Command {
   data = new SlashCommandBuilder()
     .setName('leave')
     .setDescription('OfficerBeepsky will leave voice');
+
   execute = async (interaction: CommandInteraction) => {
     this.voiceService.leaveVoice(interaction)
       .then((message: string) => interaction.reply(message))

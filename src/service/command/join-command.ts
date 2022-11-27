@@ -3,7 +3,7 @@ import { CommandInteraction } from 'discord.js';
 import { injectable, inject } from 'inversify';
 import { SYMBOLS } from '../../symbols';
 import { VoiceService } from '../voice/voice-service';
-import { Command } from './command';
+import { Command } from './_command';
 
 @injectable()
 export class JoinCommand implements Command {
@@ -17,6 +17,7 @@ export class JoinCommand implements Command {
   data = new SlashCommandBuilder()
     .setName('join')
     .setDescription('OfficerBeepsky will join your voice channel');
+
   execute = async (interaction: CommandInteraction) => {
     this.voiceService.joinVoice(interaction)
       .then(() => interaction.reply(":fire:<:hell:490044821843738624>:fire:"))

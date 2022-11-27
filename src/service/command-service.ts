@@ -5,7 +5,7 @@ import { CommandInteraction, GuildMember } from 'discord.js';
 
 import { VoiceService } from './voice/voice-service';
 import { JoinCommand } from './command/join-command';
-import { Command } from './command/command';
+import { Command } from './command/_command';
 import { LeaveCommand } from './command/leave-command';
 
 @injectable()
