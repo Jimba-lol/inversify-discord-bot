@@ -8,40 +8,40 @@ import { InteractionService } from './service/interaction-service';
 
 @injectable()
 export class Bot {
-	private client: Client;
-	private readonly token: string;
-	private interactionService: InteractionService;
-	private messageService: MessageService;
+  private client: Client;
+  private readonly token: string;
+  private interactionService: InteractionService;
+  private messageService: MessageService;
 
-	constructor(
-		@inject(SYMBOLS.Client) client: Client,
-		@inject(SYMBOLS.Token) token: string,
-		@inject(SYMBOLS.InteractionService) interactionService: InteractionService,
-		@inject(SYMBOLS.MessageService) messageService: MessageService,
-	) {
-		this.client = client;
-		this.token = token;
-		this.interactionService = interactionService;
-		this.messageService = messageService;
-	}
+  constructor(
+    @inject(SYMBOLS.Client) client: Client,
+    @inject(SYMBOLS.Token) token: string,
+    @inject(SYMBOLS.InteractionService) interactionService: InteractionService,
+    @inject(SYMBOLS.MessageService) messageService: MessageService,
+  ) {
+    this.client = client;
+    this.token = token;
+    this.interactionService = interactionService;
+    this.messageService = messageService;
+  }
 
-	public listen(): Promise<string> {
-		this.client.on('messageCreate', (message: Message) => {
-			if (message.author.bot) { return; }
-			this.messageService.handleMessage(message);
-		});
-		this.client.on('interactionCreate', (interaction: Interaction) => {
-			this.interactionService.handleInteraction(interaction);
-		});
-		this.client.on('ready', () => {
-			this.client.user.setPresence({
-				status: 'online',
-				activities: [{
-					name: 'YOU... aahahahaaa',
-					type: 'WATCHING'
-				}]
-			});
-		});
-		return this.client.login(this.token);
-	}
+  public listen(): Promise<string> {
+    this.client.on('messageCreate', (message: Message) => {
+      if (message.author.bot) { return; }
+      this.messageService.handleMessage(message);
+    });
+    this.client.on('interactionCreate', (interaction: Interaction) => {
+      this.interactionService.handleInteraction(interaction);
+    });
+    this.client.on('ready', () => {
+      this.client.user.setPresence({
+        status: 'online',
+        activities: [{
+          name: 'YOU... aahahahaaa',
+          type: 'WATCHING'
+        }]
+      });
+    });
+    return this.client.login(this.token);
+  }
 }

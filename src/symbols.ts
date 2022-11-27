@@ -1,16 +1,16 @@
 export const SYMBOLS = {
-	Bot: Symbol('Bot'),
-	Client: Symbol('Client'),
-	Token: Symbol('Token'),
+  Bot: Symbol('Bot'),
+  Client: Symbol('Client'),
+  Token: Symbol('Token'),
 
-	CommandService: Symbol('CommandService'),
-	ContextMenuService: Symbol('ContextMenuService'),
-	InteractionService: Symbol('InteractionService'),
-	MessageService: Symbol('MessageService'),
-	VoiceService: Symbol('VoiceService'),
+  CommandService: Symbol('CommandService'),
+  ContextMenuService: Symbol('ContextMenuService'),
+  InteractionService: Symbol('InteractionService'),
+  MessageService: Symbol('MessageService'),
+  VoiceService: Symbol('VoiceService'),
 
-	MockMessage: Symbol('MockMessage'),
+  MockMessage: Symbol('MockMessage'),
 
-	JoinCommand: Symbol('JoinCommand'),
-	LeaveCommand: Symbol('LeaveCommand'),
+  JoinCommand: Symbol('JoinCommand'),
+  LeaveCommand: Symbol('LeaveCommand'),
 }

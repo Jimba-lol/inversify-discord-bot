@@ -57,36 +57,36 @@ export class YoutubeTrack implements YoutubeTrackData {
   }
 
   /**
-	 * Creates a Track from a video URL and lifecycle callback methods.
-	 *
-	 * @param url The URL of the video
-	 * @param methods Lifecycle callbacks
-	 *
-	 * @returns The created Track
-	 */
-	public static async from(url: string, methods: Pick<YoutubeTrack, 'onStart' | 'onFinish' | 'onError'>): Promise<YoutubeTrack> {
-		const info = await getInfo(url);
+   * Creates a Track from a video URL and lifecycle callback methods.
+   *
+   * @param url The URL of the video
+   * @param methods Lifecycle callbacks
+   *
+   * @returns The created Track
+   */
+  public static async from(url: string, methods: Pick<YoutubeTrack, 'onStart' | 'onFinish' | 'onError'>): Promise<YoutubeTrack> {
+    const info = await getInfo(url);
 
-		// The methods are wrapped so that we can ensure that they are only called once.
-		const wrappedMethods = {
-			onStart() {
-				wrappedMethods.onStart = () => {};
-				methods.onStart();
-			},
-			onFinish() {
-				wrappedMethods.onFinish = () => {};
-				methods.onFinish();
-			},
-			onError(error: Error) {
-				wrappedMethods.onError = () => {};
-				methods.onError(error);
-			},
-		};
+    // The methods are wrapped so that we can ensure that they are only called once.
+    const wrappedMethods = {
+      onStart() {
+        wrappedMethods.onStart = () => {};
+        methods.onStart();
+      },
+      onFinish() {
+        wrappedMethods.onFinish = () => {};
+        methods.onFinish();
+      },
+      onError(error: Error) {
+        wrappedMethods.onError = () => {};
+        methods.onError(error);
+      },
+    };
 
-		return new YoutubeTrack({
-			title: info.videoDetails.title,
-			url,
-			...wrappedMethods,
-		});
-	}
+    return new YoutubeTrack({
+      title: info.videoDetails.title,
+      url,
+      ...wrappedMethods,
+    });
+  }
 }

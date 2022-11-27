@@ -16,11 +16,11 @@ import { LeaveCommand } from './service/command/leave-command';
 
 let container = new Container();
 let clientOptions: ClientOptions = {
-	intents: [
-		Intents.FLAGS.GUILDS,
-		Intents.FLAGS.GUILD_MESSAGES,
-		Intents.FLAGS.GUILD_VOICE_STATES
-	]
+  intents: [
+    Intents.FLAGS.GUILDS,
+    Intents.FLAGS.GUILD_MESSAGES,
+    Intents.FLAGS.GUILD_VOICE_STATES
+  ]
 };
 
 container.bind<Bot>(SYMBOLS.Bot).to(Bot).inSingletonScope();
