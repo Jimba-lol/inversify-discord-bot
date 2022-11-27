@@ -107,8 +107,8 @@ const wait = promisify(setTimeout);
 	 *
 	 * @param track The track to add to the queue
 	 */
-	public enqueue(audioTrack: YoutubeTrack) {
-		this.queue.push(audioTrack);
+	public enqueue(track: YoutubeTrack) {
+		this.queue.push(track);
 		void this.processQueue();
 	}
 
