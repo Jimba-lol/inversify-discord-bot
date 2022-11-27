@@ -24,12 +24,10 @@ container.bind<Bot>(SYMBOLS.Bot).to(Bot).inSingletonScope();
 container.bind<Client>(SYMBOLS.Client).toConstantValue(new Client(clientOptions));
 container.bind<string>(SYMBOLS.Token).toConstantValue(process.env.TOKEN);
 
-container.bind<MessageService>(SYMBOLS.MessageService).to(MessageService).inSingletonScope();
-
-container.bind<InteractionService>(SYMBOLS.InteractionService).to(InteractionService).inSingletonScope();
-container.bind<ContextMenuService>(SYMBOLS.ContextMenuService).to(ContextMenuService).inSingletonScope();
 container.bind<CommandService>(SYMBOLS.CommandService).to(CommandService).inSingletonScope();
-
+container.bind<ContextMenuService>(SYMBOLS.ContextMenuService).to(ContextMenuService).inSingletonScope();
+container.bind<InteractionService>(SYMBOLS.InteractionService).to(InteractionService).inSingletonScope();
+container.bind<MessageService>(SYMBOLS.MessageService).to(MessageService).inSingletonScope();
 container.bind<MockMessage>(SYMBOLS.MockMessage).to(MockMessage).inSingletonScope();
 container.bind<VoiceService>(SYMBOLS.VoiceService).to(VoiceService).inSingletonScope();
 
