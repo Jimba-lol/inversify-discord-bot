@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, SlashCommandStringOption } from '@discordjs/builders';
+import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction } from 'discord.js';
 import { injectable, inject } from 'inversify';
 import { SYMBOLS } from '../../symbols';
