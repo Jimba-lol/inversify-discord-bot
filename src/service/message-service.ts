@@ -12,7 +12,7 @@ export class MessageService {
 	public handleMessage(message: Message) {
 		// pfft, I'm not reading *that*
 		if (message.content.length >= 800) {
-			message.channel.send({ files: [path.join(this.resourcePath, 'duke.mp4')]});
+			message.channel.send({ files: [path.join(this.resourcePath, 'video/meme/duke.mp4')]});
 			return;
 		}
 	}
