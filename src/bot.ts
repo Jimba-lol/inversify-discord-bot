@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
 import { SYMBOLS } from './symbols';
 
-import { Client, Message, Interaction, CommandInteraction, MessageComponent } from 'discord.js';
+import { Client, Message, Interaction } from 'discord.js';
 
 import { MessageService } from './service/message-service';
 import { InteractionService } from './service/interaction-service';
@@ -27,8 +27,7 @@ export class Bot {
 
 	public listen(): Promise<string> {
 		this.client.on('messageCreate', (message: Message) => {
-			if (message.author.bot)
-				return;
+			if (message.author.bot) { return; }
 			this.messageService.handleMessage(message);
 		});
 		this.client.on('interactionCreate', (interaction: Interaction) => {
