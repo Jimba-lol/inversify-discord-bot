@@ -9,9 +9,12 @@
 `npm run test`
 ###### to run:
 `npm run start`
+###### to register commands:
+`npm run register-commands`
 
-### Bot's user ID
-765667961989234719
+### Setup
+put custom audio files here:\
+`src/resource/sound`
 
 ### Features
 ###### Context Menu Actions

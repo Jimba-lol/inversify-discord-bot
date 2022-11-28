@@ -19,4 +19,8 @@ export class ContextMenuService {
     const contextInteraction = this.contextInteractions.find((ci) => ci.data.name === interaction.commandName);
     if (contextInteraction) { contextInteraction.execute(interaction) };
   }
+
+  public getContextInteractions(): Array<ContextInteraction> {
+    return this.contextInteractions;
+  }  
 }

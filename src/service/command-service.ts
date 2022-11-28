@@ -9,14 +9,14 @@ import { LeaveCommand } from './command/leave-command';
 
 @injectable()
 export class CommandService {
-  private commandList: Array<Command> = [];
+  commands: Array<Command> = [];
 
   constructor(
     @inject(SYMBOLS.JoinCommand) joinCommand: JoinCommand,
     @inject(SYMBOLS.LeaveCommand) leaveCommand: LeaveCommand
   ) {
-    this.commandList.push(joinCommand);
-    this.commandList.push(leaveCommand);
+    this.commands.push(joinCommand);
+    this.commands.push(leaveCommand);
   }
 
   /**
@@ -24,7 +24,11 @@ export class CommandService {
    * @param interaction The slash command we're handling.
    */
   public async handleCommand(interaction: CommandInteraction) {
-    const command = this.commandList.find(command => interaction.commandName === command.data.name);
+    const command = this.commands.find(command => interaction.commandName === command.data.name);
     if (command) { command.execute(interaction); }
+  }
+
+  public getCommands(): Array<Command> {
+    return this.commands;
   }
 }
