@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
 import { SYMBOLS } from './symbols';
 
-import { Client, Message, Interaction } from 'discord.js';
+import { Client, Message, Interaction, ActivitiesOptions } from 'discord.js';
 
 import { MessageService } from './service/message-service';
 import { InteractionService } from './service/interaction-service';
@@ -12,6 +12,12 @@ export class Bot {
   private readonly token: string;
   private interactionService: InteractionService;
   private messageService: MessageService;
+
+  private presences: Array<ActivitiesOptions> = [
+    {name: 'YOU... aahahahaaa', type: 'WATCHING'},
+    {name: '👁👃👁', type: 'WATCHING'},
+    {name: '👀', type: 'WATCHING'}
+  ];
 
   constructor(
     @inject(SYMBOLS.Client) client: Client,
@@ -34,12 +40,11 @@ export class Bot {
       this.interactionService.handleInteraction(interaction);
     });
     this.client.on('ready', () => {
-      this.client.user.setPresence({
+      this.client.user!.setPresence({
         status: 'online',
-        activities: [{
-          name: 'YOU... aahahahaaa',
-          type: 'WATCHING'
-        }]
+        activities: [
+          this.presences[Math.floor(Math.random() * this.presences.length)],
+        ]
       });
     });
     return this.client.login(this.token);
