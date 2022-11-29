@@ -1,9 +1,9 @@
 import { injectable } from 'inversify';
-import { VoiceSubscription } from './model/voice-subscription';
+import { VoiceSubscription } from '../model/voice-subscription';
 
 import { CommandInteraction, GuildMember, Snowflake } from 'discord.js';
 import { joinVoiceChannel, entersState, VoiceConnectionStatus, AudioPlayerStatus, AudioResource } from '@discordjs/voice';
-import { YoutubeTrack } from './model/youtube-track';
+import { YoutubeTrack } from '../model/youtube-track';
 
 // TODO figure out how to integrate functions like 'skip' and 'pause' into normal audio sounds.
 @injectable()

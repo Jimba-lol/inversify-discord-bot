@@ -10,7 +10,7 @@ import { InteractionService } from './service/interaction-service';
 import { ContextMenuService } from './service/context-menu-service';
 import { CommandService } from './service/command-service';
 import { MockMessage } from './service/context-menu/mock-message';
-import { VoiceService } from './service/voice/voice-service';
+import { VoiceService } from './service/voice-service';
 import { JoinCommand } from './service/command/join-command';
 import { LeaveCommand } from './service/command/leave-command';
 import { PlayCommand } from './service/command/play-command';

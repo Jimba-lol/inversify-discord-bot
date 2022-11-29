@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction } from 'discord.js';
 import { injectable, inject } from 'inversify';
 import { SYMBOLS } from '../../symbols';
-import { VoiceService } from '../voice/voice-service';
+import { VoiceService } from '../voice-service';
 import { Command } from './_command';
 
 @injectable()
