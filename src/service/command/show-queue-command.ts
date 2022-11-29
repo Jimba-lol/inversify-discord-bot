@@ -6,7 +6,7 @@ import { VoiceService } from '../voice/voice-service';
 import { Command } from './_command';
 
 @injectable()
-export class PlayCommand implements Command {
+export class ShowQueueCommand implements Command {
   private voiceService: VoiceService;
   constructor(
     @inject(SYMBOLS.VoiceService) voiceService: VoiceService
@@ -15,16 +15,10 @@ export class PlayCommand implements Command {
   }
 
   data = new SlashCommandBuilder()
-    .setName('play')
-    .setDescription('OfficerBeepsky will play a fun sound for you')
-    .addStringOption((option) => 
-      option
-        .setName('url')
-        .setDescription('Either a YouTube URL or the name of the audio file you want to play')
-        .setRequired(true)
-      );
+    .setName('queue')
+    .setDescription('OfficerBeepsky will print out the queue for you.');
 
   execute = async (interaction: CommandInteraction) => {
-    this.voiceService.playTrack(interaction);
+    this.voiceService.showQueue(interaction);
   }
 };

@@ -14,4 +14,8 @@ export const SYMBOLS = {
   JoinCommand: Symbol('JoinCommand'),
   LeaveCommand: Symbol('LeaveCommand'),
   PlayCommand: Symbol('PlayCommand'),
+  PauseCommand: Symbol('PauseCommand'),
+  ResumeCommand: Symbol('ResumeCommand'),
+  ShowQueueCommand: Symbol('ShowQueueCommand'),
+  SkipCommand: Symbol('SkipCommand')
 }

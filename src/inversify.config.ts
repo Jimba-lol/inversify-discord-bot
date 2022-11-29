@@ -14,6 +14,10 @@ import { VoiceService } from './service/voice/voice-service';
 import { JoinCommand } from './service/command/join-command';
 import { LeaveCommand } from './service/command/leave-command';
 import { PlayCommand } from './service/command/play-command';
+import { PauseCommand } from './service/command/pause-command';
+import { ResumeCommand } from './service/command/resume-command';
+import { ShowQueueCommand } from './service/command/show-queue-command';
+import { SkipCommand } from './service/command/skip-command';
 
 let container = new Container();
 let clientOptions: ClientOptions = {
@@ -38,5 +42,9 @@ container.bind<VoiceService>(SYMBOLS.VoiceService).to(VoiceService).inSingletonS
 container.bind<JoinCommand>(SYMBOLS.JoinCommand).to(JoinCommand).inSingletonScope();
 container.bind<LeaveCommand>(SYMBOLS.LeaveCommand).to(LeaveCommand).inSingletonScope();
 container.bind<PlayCommand>(SYMBOLS.PlayCommand).to(PlayCommand).inSingletonScope();
+container.bind<PauseCommand>(SYMBOLS.PauseCommand).to(PauseCommand).inSingletonScope();
+container.bind<ResumeCommand>(SYMBOLS.ResumeCommand).to(ResumeCommand).inSingletonScope();
+container.bind<ShowQueueCommand>(SYMBOLS.ShowQueueCommand).to(ShowQueueCommand).inSingletonScope();
+container.bind<SkipCommand>(SYMBOLS.SkipCommand).to(SkipCommand).inSingletonScope();
 
 export default container;

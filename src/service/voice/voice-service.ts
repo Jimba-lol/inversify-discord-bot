@@ -1,8 +1,8 @@
 import { injectable } from 'inversify';
 import { VoiceSubscription } from './model/voice-subscription';
 
-import { CommandInteraction, GuildMember, Interaction, Snowflake } from 'discord.js';
-import { VoiceConnection, joinVoiceChannel, entersState, VoiceConnectionStatus } from '@discordjs/voice';
+import { CommandInteraction, GuildMember, Snowflake } from 'discord.js';
+import { joinVoiceChannel, entersState, VoiceConnectionStatus, AudioPlayerStatus, AudioResource } from '@discordjs/voice';
 import { YoutubeTrack } from './model/youtube-track';
 
 // TODO figure out how to integrate functions like 'skip' and 'pause' into normal audio sounds.
@@ -30,7 +30,7 @@ export class VoiceService {
           reject(error);
         }
       } else {
-        reject("You must be in a voice channel.");
+        reject('You must be in a voice channel.');
       }
     });
   }
@@ -39,44 +39,60 @@ export class VoiceService {
     return new Promise((resolve, reject) => {
       const subscription = this.subscriptions.get(interaction.guildId!);
       if (!subscription) {
-        reject("<:angryVergil:470440004234117132> I need to be in a voice channel in order to leave one.");
+        reject('<:angryVergil:470440004234117132> I need to be in a voice channel in order to leave one.');
         return;
       } else {
         subscription.voiceConnection.destroy();
-        resolve(":wave:<:thomas:464217303211442187>");
+        this.subscriptions.delete(interaction.guildId!);
+        resolve(':wave:<:thomas:464217303211442187>');
       }
     });
   }
 
-  public queueTrack(interaction: CommandInteraction) {
-    let subscription = this.subscriptions.get(interaction.guildId!);
+  public showQueue(interaction: CommandInteraction): void {
+    const subscription = this.subscriptions.get(interaction.guildId!);
     if (!subscription) {
-      interaction.reply("<:angryVergil:470440004234117132> I'm not even in voice.");
-      return;
+      interaction.reply('<:angryVergil:470440004234117132> I\'m not even in voice.');
+    } else {
+      const current = 
+        (subscription.audioPlayer.state.status === AudioPlayerStatus.Idle) ?
+          'Nothing is currently playing'
+          : `Currently playing **${(subscription.audioPlayer.state.resource as AudioResource<YoutubeTrack>).metadata.title}**`;
+      const queue = subscription.queue
+        .slice(0, 3)
+        .map((track, index) => `${index + 1} ${track.title}`)
+        .join('\n');
+      interaction.reply(`${current}\n\n${queue}`);
     }
   }
 
-  public pauseTrack(interaction: CommandInteraction) {
-    let subscription = this.subscriptions.get(interaction.guildId!);
+  public pauseTrack(interaction: CommandInteraction): void {
+    const subscription = this.subscriptions.get(interaction.guildId!);
     if (!subscription) {
-      interaction.reply("<:angryVergil:470440004234117132> I'm not even in voice.");
-      return;
+      interaction.reply('<:angryVergil:470440004234117132> I\'m not even in voice.');
+    } else {
+      subscription.audioPlayer.pause();
+      interaction.reply('<:nero:503837001309618177>:pause_button:');
     }
   }
 
-  public resumeTrack(interaction: CommandInteraction) {
-    let subscription = this.subscriptions.get(interaction.guildId!);
+  public resumeTrack(interaction: CommandInteraction): void {
+    const subscription = this.subscriptions.get(interaction.guildId!);
     if (!subscription) {
-      interaction.reply("<:angryVergil:470440004234117132> I'm not even in voice.");
-      return;
+      interaction.reply('<:angryVergil:470440004234117132> I\'m not even in voice.');
+    } else {
+      subscription.audioPlayer.unpause();
+      interaction.reply('<:tommy:445018418702188554>:arrow_forward:');
     }
   }
 
-  public skipTrack(interaction: CommandInteraction) {
-    let subscription = this.subscriptions.get(interaction.guildId!);
+  public skipTrack(interaction: CommandInteraction): void {
+    const subscription = this.subscriptions.get(interaction.guildId!);
     if (!subscription) {
-      interaction.reply("<:angryVergil:470440004234117132> I'm not even in voice.");
-      return;
+      interaction.reply('<:angryVergil:470440004234117132> I\'m not even in voice.');
+    } else {
+      subscription.audioPlayer.stop();
+      interaction.reply('<:ultimate:457761606391300115>:next_track:');
     }
   }
 
@@ -84,7 +100,7 @@ export class VoiceService {
   // Will want to create new type 'FileTrack' which can 
   public playTrack(interaction: CommandInteraction): void {
     const url = interaction.options.get('url')!.value! as string;
-    let subscription = this.subscriptions.get(interaction.guildId!);
+    const subscription = this.subscriptions.get(interaction.guildId!);
     if (!subscription) {
       if (interaction.member instanceof GuildMember && interaction.member.voice.channel)
         this.joinVoice(interaction)
@@ -103,7 +119,7 @@ export class VoiceService {
     await entersState(subscription.voiceConnection, VoiceConnectionStatus.Ready, 20e3)
     .catch((err) => {
       console.warn(err);
-      return "Something went wrong while joining your channel.";
+      return 'Something went wrong while joining your channel.';
     });
     try {
       const track = await YoutubeTrack.from(url, {
@@ -111,7 +127,7 @@ export class VoiceService {
           interaction.followUp({ content: `Now Playing **${track.title}** - ${track.url}`, ephemeral: false }).catch(console.warn);
         },
         onFinish() {
-          interaction.followUp({ content: "Now Finished", ephemeral: true }).catch(console.warn);
+          interaction.followUp({ content: 'Now Finished', ephemeral: true }).catch(console.warn);
         },
         onError(err) {
           console.warn(err);
