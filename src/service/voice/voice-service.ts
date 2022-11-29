@@ -1,16 +1,16 @@
 import { injectable } from 'inversify';
-import { VoiceSubscription } from './music/voice-subscription';
+import { VoiceSubscription } from './model/voice-subscription';
 
 import { CommandInteraction, GuildMember, Interaction, Snowflake } from 'discord.js';
 import { VoiceConnection, joinVoiceChannel, entersState, VoiceConnectionStatus } from '@discordjs/voice';
-import { YoutubeTrack } from './music/youtube-track';
+import { YoutubeTrack } from './model/youtube-track';
 
 // TODO figure out how to integrate functions like 'skip' and 'pause' into normal audio sounds.
 @injectable()
 export class VoiceService {
-  private voiceSubscriptionArray: Map<Snowflake, VoiceSubscription>;
+  subscriptions: Map<Snowflake, VoiceSubscription>;
   constructor() {
-    this.voiceSubscriptionArray = new Map<Snowflake, VoiceSubscription>();
+    this.subscriptions = new Map<Snowflake, VoiceSubscription>();
   }
 
   public joinVoice(interaction: CommandInteraction): Promise<VoiceSubscription> {
@@ -23,7 +23,7 @@ export class VoiceService {
             //@ts-ignore
             adapterCreator: interaction.member.voice.channel.guild.voiceAdapterCreator,
           }));
-          this.voiceSubscriptionArray.set(interaction.guildId, subscription);
+          this.subscriptions.set(interaction.guildId!, subscription);
           resolve(subscription);
         } catch (error) {
           console.log(error);
@@ -37,7 +37,7 @@ export class VoiceService {
 
   public leaveVoice(interaction: CommandInteraction): Promise<string> {
     return new Promise((resolve, reject) => {
-      const subscription = this.voiceSubscriptionArray.get(interaction.guildId);
+      const subscription = this.subscriptions.get(interaction.guildId!);
       if (!subscription) {
         reject("<:angryVergil:470440004234117132> I need to be in a voice channel in order to leave one.");
         return;
@@ -49,7 +49,7 @@ export class VoiceService {
   }
 
   public queueTrack(interaction: CommandInteraction) {
-    let subscription = this.voiceSubscriptionArray.get(interaction.guildId);
+    let subscription = this.subscriptions.get(interaction.guildId!);
     if (!subscription) {
       interaction.reply("<:angryVergil:470440004234117132> I'm not even in voice.");
       return;
@@ -57,7 +57,7 @@ export class VoiceService {
   }
 
   public pauseTrack(interaction: CommandInteraction) {
-    let subscription = this.voiceSubscriptionArray.get(interaction.guildId);
+    let subscription = this.subscriptions.get(interaction.guildId!);
     if (!subscription) {
       interaction.reply("<:angryVergil:470440004234117132> I'm not even in voice.");
       return;
@@ -65,7 +65,7 @@ export class VoiceService {
   }
 
   public resumeTrack(interaction: CommandInteraction) {
-    let subscription = this.voiceSubscriptionArray.get(interaction.guildId);
+    let subscription = this.subscriptions.get(interaction.guildId!);
     if (!subscription) {
       interaction.reply("<:angryVergil:470440004234117132> I'm not even in voice.");
       return;
@@ -73,7 +73,7 @@ export class VoiceService {
   }
 
   public skipTrack(interaction: CommandInteraction) {
-    let subscription = this.voiceSubscriptionArray.get(interaction.guildId);
+    let subscription = this.subscriptions.get(interaction.guildId!);
     if (!subscription) {
       interaction.reply("<:angryVergil:470440004234117132> I'm not even in voice.");
       return;
@@ -84,7 +84,7 @@ export class VoiceService {
   // Will want to create new type 'FileTrack' which can 
   public playTrack(interaction: CommandInteraction): void {
     const url = interaction.options.get('url')!.value! as string;
-    let subscription = this.voiceSubscriptionArray.get(interaction.guildId);
+    let subscription = this.subscriptions.get(interaction.guildId!);
     if (!subscription) {
       if (interaction.member instanceof GuildMember && interaction.member.voice.channel)
         this.joinVoice(interaction)
@@ -108,7 +108,7 @@ export class VoiceService {
     try {
       const track = await YoutubeTrack.from(url, {
         onStart() {
-          interaction.followUp({ content: "Now Playing", ephemeral: true }).catch(console.warn);
+          interaction.followUp({ content: `Now Playing **${track.title}** - ${track.url}`, ephemeral: false }).catch(console.warn);
         },
         onFinish() {
           interaction.followUp({ content: "Now Finished", ephemeral: true }).catch(console.warn);
@@ -119,7 +119,7 @@ export class VoiceService {
         }
       });
       subscription.enqueue(track);
-      await interaction.followUp(`Enqueued **${track.title}**`);
+      await interaction.reply(`Enqueued **${track.title}**`);
     } catch (err) {
       console.warn(err);
       interaction.followUp('An error has occurred while trying to play the track.');

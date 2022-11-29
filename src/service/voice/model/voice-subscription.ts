@@ -6,7 +6,9 @@ import {
   entersState,
   VoiceConnection,
   VoiceConnectionDisconnectReason,
-  VoiceConnectionStatus
+  VoiceConnectionStatus,
+  VoiceConnectionState,
+  AudioPlayerState
 } from '@discordjs/voice';
 import type { YoutubeTrack } from './youtube-track';
 import { promisify } from 'node:util';
@@ -29,7 +31,7 @@ const wait = promisify(setTimeout);
     this.audioPlayer = createAudioPlayer();
     this.queue = [];
 
-    this.voiceConnection.on('stateChange', async (_: any, newState: { status: any; reason: any; closeCode: number; }) => {
+    this.voiceConnection.on('stateChange', async (_: VoiceConnectionState, newState: VoiceConnectionState) => {
       if (newState.status === VoiceConnectionStatus.Disconnected) {
         if (newState.reason === VoiceConnectionDisconnectReason.WebSocketClose && newState.closeCode === 4014) {
           /**
@@ -84,7 +86,7 @@ const wait = promisify(setTimeout);
     });
 
     // Configure audio player
-    this.audioPlayer.on('stateChange', (oldState: { status: any; resource: any; }, newState: { status: any; resource: any; }) => {
+    this.audioPlayer.on('stateChange', (oldState: AudioPlayerState, newState: AudioPlayerState) => {
       if (newState.status === AudioPlayerStatus.Idle && oldState.status !== AudioPlayerStatus.Idle) {
         // If the Idle state is entered from a non-Idle state, it means that an audio resource has finished playing.
         // The queue is then processed to start playing the next track, if one is available.

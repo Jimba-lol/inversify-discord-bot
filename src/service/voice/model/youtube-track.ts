@@ -1,5 +1,5 @@
 import { AudioResource, createAudioResource, demuxProbe } from '@discordjs/voice';
-import { raw as ytdl } from 'youtube-dl-exec';
+import { exec as ytdl } from 'youtube-dl-exec';
 import { YoutubeTrackData } from './youtube-track-data';
 import { getInfo } from 'ytdl-core';
 
@@ -27,10 +27,10 @@ export class YoutubeTrack implements YoutubeTrackData {
       const process = ytdl(
         this.url,
         {
-          o: "-",
-          q: "",
-          f: 'bestaudio[ext=webm+acodec=opus+asr=48000]/bestaudio',
-          r: '100K'
+          output: "-",
+          quiet: true,
+          // format: 'bestaudio[ext=webm+acodec=opus+asr=48000]/bestaudio',
+          // limitRate: '100K'
         },
         { stdio: ['ignore', 'pipe', 'ignore']}
       );
@@ -46,13 +46,13 @@ export class YoutubeTrack implements YoutubeTrackData {
         reject(error);
       };
       process
-      .once('spawn', () => {
-        demuxProbe(stream)
-        .then((probe: { stream: any; type: any; }) => {
-          resolve(createAudioResource(probe.stream, { metadata: this, inputType: probe.type}))
-        }).catch(onError);
-      })
-      .catch(onError);
+        .once('spawn', () => {
+          demuxProbe(stream)
+          .then((probe: { stream: any; type: any; }) => {
+            resolve(createAudioResource(probe.stream, { metadata: this, inputType: probe.type}))
+          }).catch(onError);
+        })
+        .catch(onError);
     });
   }
 

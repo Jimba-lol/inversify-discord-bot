@@ -13,4 +13,5 @@ export const SYMBOLS = {
 
   JoinCommand: Symbol('JoinCommand'),
   LeaveCommand: Symbol('LeaveCommand'),
+  PlayCommand: Symbol('PlayCommand'),
 }

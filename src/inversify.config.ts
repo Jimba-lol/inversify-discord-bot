@@ -13,6 +13,7 @@ import { MockMessage } from './service/context-menu/mock-message';
 import { VoiceService } from './service/voice/voice-service';
 import { JoinCommand } from './service/command/join-command';
 import { LeaveCommand } from './service/command/leave-command';
+import { PlayCommand } from './service/command/play-command';
 
 let container = new Container();
 let clientOptions: ClientOptions = {
@@ -25,7 +26,7 @@ let clientOptions: ClientOptions = {
 
 container.bind<Bot>(SYMBOLS.Bot).to(Bot).inSingletonScope();
 container.bind<Client>(SYMBOLS.Client).toConstantValue(new Client(clientOptions));
-container.bind<string>(SYMBOLS.Token).toConstantValue(process.env.TOKEN);
+container.bind<string>(SYMBOLS.Token).toConstantValue(process.env.TOKEN!);
 
 container.bind<CommandService>(SYMBOLS.CommandService).to(CommandService).inSingletonScope();
 container.bind<ContextMenuService>(SYMBOLS.ContextMenuService).to(ContextMenuService).inSingletonScope();
@@ -36,5 +37,6 @@ container.bind<VoiceService>(SYMBOLS.VoiceService).to(VoiceService).inSingletonS
 
 container.bind<JoinCommand>(SYMBOLS.JoinCommand).to(JoinCommand).inSingletonScope();
 container.bind<LeaveCommand>(SYMBOLS.LeaveCommand).to(LeaveCommand).inSingletonScope();
+container.bind<PlayCommand>(SYMBOLS.PlayCommand).to(PlayCommand).inSingletonScope();
 
 export default container;

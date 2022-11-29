@@ -6,6 +6,7 @@ import { CommandInteraction } from 'discord.js';
 import { JoinCommand } from './command/join-command';
 import { Command } from './command/_command';
 import { LeaveCommand } from './command/leave-command';
+import { PlayCommand } from './command/play-command';
 
 @injectable()
 export class CommandService {
@@ -13,10 +14,12 @@ export class CommandService {
 
   constructor(
     @inject(SYMBOLS.JoinCommand) joinCommand: JoinCommand,
-    @inject(SYMBOLS.LeaveCommand) leaveCommand: LeaveCommand
+    @inject(SYMBOLS.LeaveCommand) leaveCommand: LeaveCommand,
+    @inject(SYMBOLS.PlayCommand) playCommand: PlayCommand
   ) {
     this.commands.push(joinCommand);
     this.commands.push(leaveCommand);
+    this.commands.push(playCommand);
   }
 
   /**
