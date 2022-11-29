@@ -124,7 +124,7 @@ export class VoiceService {
     try {
       const track = await YoutubeTrack.from(url, {
         onStart() {
-          interaction.followUp({ content: `Now Playing **${track.title}** - ${track.url}`, ephemeral: false }).catch(console.warn);
+          interaction.followUp({ content: `Now Playing **${track.title}**`, ephemeral: false }).catch(console.warn);
         },
         onFinish() {
           interaction.followUp({ content: 'Now Finished', ephemeral: true }).catch(console.warn);
@@ -135,7 +135,7 @@ export class VoiceService {
         }
       });
       subscription.enqueue(track);
-      interaction.reply(`Enqueued **${track.title}**`);
+      interaction.reply(`Enqueued **${track.title} - ${track.url}**`);
     } catch (err) {
       console.warn(err);
       interaction.followUp('An error has occurred while trying to play the track.');
