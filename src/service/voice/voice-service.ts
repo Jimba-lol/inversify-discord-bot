@@ -135,7 +135,7 @@ export class VoiceService {
         }
       });
       subscription.enqueue(track);
-      await interaction.reply(`Enqueued **${track.title}**`);
+      interaction.reply(`Enqueued **${track.title}**`);
     } catch (err) {
       console.warn(err);
       interaction.followUp('An error has occurred while trying to play the track.');
