@@ -55,8 +55,8 @@ export class VoiceService {
       interaction.reply('<:angryVergil:470440004234117132> I\'m not even in voice.');
     } else {
       const current = 
-        (subscription.audioPlayer.state.status === AudioPlayerStatus.Idle) ?
-          'Nothing is currently playing'
+        (subscription.audioPlayer.state.status === AudioPlayerStatus.Idle)
+          ? 'Nothing is currently playing'
           : `Currently playing **${(subscription.audioPlayer.state.resource as AudioResource<YoutubeTrack>).metadata.title}**`;
       const queue = subscription.queue
         .slice(0, 3)
