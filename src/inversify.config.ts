@@ -18,6 +18,7 @@ import { PauseCommand } from './service/command/pause-command';
 import { ResumeCommand } from './service/command/resume-command';
 import { ShowQueueCommand } from './service/command/show-queue-command';
 import { SkipCommand } from './service/command/skip-command';
+import { HighlightMessage } from './service/context-menu/highlight-message';
 
 let container = new Container();
 let clientOptions: ClientOptions = {
@@ -31,13 +32,16 @@ let clientOptions: ClientOptions = {
 container.bind<Bot>(SYMBOLS.Bot).to(Bot).inSingletonScope();
 container.bind<Client>(SYMBOLS.Client).toConstantValue(new Client(clientOptions));
 container.bind<string>(SYMBOLS.Token).toConstantValue(process.env.TOKEN!);
+container.bind<string>(SYMBOLS.HighlightChannelId).toConstantValue(process.env.HIGHLIGHT_CHANNEL_ID!);
 
 container.bind<CommandService>(SYMBOLS.CommandService).to(CommandService).inSingletonScope();
 container.bind<ContextMenuService>(SYMBOLS.ContextMenuService).to(ContextMenuService).inSingletonScope();
 container.bind<InteractionService>(SYMBOLS.InteractionService).to(InteractionService).inSingletonScope();
 container.bind<MessageService>(SYMBOLS.MessageService).to(MessageService).inSingletonScope();
-container.bind<MockMessage>(SYMBOLS.MockMessage).to(MockMessage).inSingletonScope();
 container.bind<VoiceService>(SYMBOLS.VoiceService).to(VoiceService).inSingletonScope();
+
+container.bind<MockMessage>(SYMBOLS.MockMessage).to(MockMessage).inSingletonScope();
+container.bind<HighlightMessage>(SYMBOLS.HighlightMessage).to(HighlightMessage).inSingletonScope();
 
 container.bind<JoinCommand>(SYMBOLS.JoinCommand).to(JoinCommand).inSingletonScope();
 container.bind<LeaveCommand>(SYMBOLS.LeaveCommand).to(LeaveCommand).inSingletonScope();

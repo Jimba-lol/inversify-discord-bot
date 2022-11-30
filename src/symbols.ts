@@ -2,6 +2,7 @@ export const SYMBOLS = {
   Bot: Symbol('Bot'),
   Client: Symbol('Client'),
   Token: Symbol('Token'),
+  HighlightChannelId: Symbol('HighlightChannelId'),
 
   CommandService: Symbol('CommandService'),
   ContextMenuService: Symbol('ContextMenuService'),
@@ -10,6 +11,7 @@ export const SYMBOLS = {
   VoiceService: Symbol('VoiceService'),
 
   MockMessage: Symbol('MockMessage'),
+  HighlightMessage: Symbol('HighlightMessage'),
 
   JoinCommand: Symbol('JoinCommand'),
   LeaveCommand: Symbol('LeaveCommand'),

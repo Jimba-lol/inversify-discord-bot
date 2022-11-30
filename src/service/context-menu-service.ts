@@ -3,6 +3,7 @@ import { ContextMenuInteraction } from 'discord.js';
 import { inject, injectable } from 'inversify';
 import { SYMBOLS } from '../symbols';
 import { MockMessage } from './context-menu/mock-message';
+import { HighlightMessage } from './context-menu/highlight-message';
 
 @injectable()
 export class ContextMenuService {
@@ -10,9 +11,10 @@ export class ContextMenuService {
 
   constructor(
     @inject(SYMBOLS.MockMessage) mockMessage: MockMessage,
-    // @inject(SYMBOLS.HighlightMessage) highlightMessage: HighlightMessage,
+    @inject(SYMBOLS.HighlightMessage) highlightMessage: HighlightMessage
   ) {
     this.contextInteractions.push(mockMessage);
+    this.contextInteractions.push(highlightMessage);
   }
 
   public handleInteraction(interaction: ContextMenuInteraction) {
@@ -22,5 +24,5 @@ export class ContextMenuService {
 
   public getContextInteractions(): Array<ContextInteraction> {
     return this.contextInteractions;
-  }  
+  }
 }
