@@ -24,7 +24,6 @@ let container = new Container();
 let clientOptions: ClientOptions = {
   intents: [
     Intents.FLAGS.GUILDS,
-    Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
     Intents.FLAGS.GUILD_MESSAGES,
     Intents.FLAGS.GUILD_VOICE_STATES
   ]
