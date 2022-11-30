@@ -1,12 +1,23 @@
 export const SYMBOLS = {
-	Bot: Symbol("Bot"),
-	Client: Symbol("Client"),
-	Token: Symbol("Token"),
+  Bot: Symbol('Bot'),
+  Client: Symbol('Client'),
+  Token: Symbol('Token'),
+  HighlightChannelId: Symbol('HighlightChannelId'),
 
-	InteractionService: Symbol("InteractionService"),
-	ContextMenuService: Symbol("ContextMenuService"),
-	CommandService: Symbol("CommandService"),
-	MockMessageInteraction: Symbol("MockMessageInteraction"),
+  CommandService: Symbol('CommandService'),
+  ContextMenuService: Symbol('ContextMenuService'),
+  InteractionService: Symbol('InteractionService'),
+  MessageService: Symbol('MessageService'),
+  VoiceService: Symbol('VoiceService'),
 
-	MessageService: Symbol("MessageService"),
+  MockMessage: Symbol('MockMessage'),
+  HighlightMessage: Symbol('HighlightMessage'),
+
+  JoinCommand: Symbol('JoinCommand'),
+  LeaveCommand: Symbol('LeaveCommand'),
+  PlayCommand: Symbol('PlayCommand'),
+  PauseCommand: Symbol('PauseCommand'),
+  ResumeCommand: Symbol('ResumeCommand'),
+  ShowQueueCommand: Symbol('ShowQueueCommand'),
+  SkipCommand: Symbol('SkipCommand')
 }

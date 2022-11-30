@@ -1,14 +1,33 @@
 # My Discord Bot
 
-### Running the Discord Bot:
-###### to compile in watch mode:
+## Running the Discord Bot:
+#### to compile in watch mode:
 `npm run watch`
-###### to compile:
+#### to compile:
 `npm run build`
-###### to test:
+#### to test:
 `npm run test`
-###### to run:
+#### to run:
 `npm run start`
+#### to register commands:
+`npm run register-commands`
 
-### Bot's user ID
-765667961989234719
+## Setup
+put custom audio files here:\
+`src/resource/sound`
+
+## Features
+#### Context Menu Actions
+right click message -> Mock\
+Mocks the message
+
+#### Slash Commands
+
+#### Misc.
+If the bot sees a message whose length is >799, it will comment on this.
+
+## Planned Features
+- Play YouTube audio based on timecode in URL
+- Starboard
+- Play 'theme songs' based on users joining the bot's voice channel
+- Ace Attorney meme generator
