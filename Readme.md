@@ -27,6 +27,7 @@ Mocks the message
 If the bot sees a message whose length is >799, it will comment on this.
 
 ## Planned Features
+- Play YouTube audio based on timecode in URL
 - Starboard
 - Play 'theme songs' based on users joining the bot's voice channel
 - Ace Attorney meme generator
