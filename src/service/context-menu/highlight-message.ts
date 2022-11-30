@@ -54,9 +54,9 @@ export class HighlightMessage implements ContextInteraction {
       .setFooter({ text: message.id })
       .setTimestamp();
 
-    let description: string = '';
+    let description: string = `[Original Message](${message.url})`;
     if (message.content && message.content.length > 0) {
-      description = message.content;
+      description += `\n${message.content}`;
     }
 
     if (message.author.avatarURL()) {
@@ -81,7 +81,6 @@ export class HighlightMessage implements ContextInteraction {
     });
 
     if (description) { result.setDescription(description); }
-    
     return result;
   }
 }
