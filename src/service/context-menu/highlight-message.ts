@@ -27,11 +27,14 @@ export class HighlightMessage implements ContextInteraction {
     if (highlightChannel) {
       interaction.channel!.messages.fetch(interaction.targetId).then((targetMessage) => {
         highlightChannel.send({ embeds: [this.embedBuilder(targetMessage).toJSON()] });
+        targetMessage.react(':star2:');
         interaction.reply({
           content: `[Message](${targetMessage.url}) from **${targetMessage.author.username}** highlighted!`,
           ephemeral: false
         });
       });
+    } else {
+      interaction.reply({ content: 'No highlight channel has been set up.', ephemeral: true });
     }
   };
 
