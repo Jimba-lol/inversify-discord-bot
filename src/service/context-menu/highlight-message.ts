@@ -26,12 +26,22 @@ export class HighlightMessage implements ContextInteraction {
 
     if (highlightChannel) {
       interaction.channel!.messages.fetch(interaction.targetId).then((targetMessage) => {
-        highlightChannel.send({ embeds: [this.embedBuilder(targetMessage).toJSON()] });
-        targetMessage.react(':star2:');
-        interaction.reply({
-          content: `[Message](${targetMessage.url}) from **${targetMessage.author.username}** highlighted!`,
-          ephemeral: false
+        const isAlreadyHighlighted: boolean = targetMessage.reactions.cache.some((react) => {
+          return react.users.cache.size < react.count;
         });
+        if (!isAlreadyHighlighted) {
+          highlightChannel.send({ embeds: [this.embedBuilder(targetMessage).toJSON()] });
+          targetMessage.react('🌟');
+          interaction.reply({
+            content: `[Message](${targetMessage.url}) from **${targetMessage.author.username}** highlighted!`,
+            ephemeral: false
+          });
+        } else {
+          interaction.reply({
+            content: `[Message](${targetMessage.url}) from **${targetMessage.author.username}** has already been highlighted!`,
+            ephemeral: true
+          });
+        }
       });
     } else {
       interaction.reply({ content: 'No highlight channel has been set up.', ephemeral: true });
@@ -44,7 +54,10 @@ export class HighlightMessage implements ContextInteraction {
       .setFooter({ text: message.id })
       .setTimestamp();
 
-    let description = message.content;
+    let description: string = '';
+    if (message.content && message.content.length > 0) {
+      description = message.content;
+    }
 
     if (message.author.avatarURL()) {
       result.setAuthor({ name: message.author.username, iconURL: message.author.avatarURL()! });
@@ -60,12 +73,15 @@ export class HighlightMessage implements ContextInteraction {
     message.attachments.forEach((attachment) => {
       if (!result.data.image && attachment.contentType?.startsWith('image')) { 
         result.setImage(attachment.url);
-      } else {
+      } else if (attachment.url && attachment.url.length > 0) {
         description += `\n${attachment.url}`;
+      } else if (attachment.proxyURL && attachment.proxyURL.length > 0) {
+        description += `\n${attachment.proxyURL}`;
       }
     });
 
-    result.setDescription(description);
+    if (description) { result.setDescription(description); }
+    
     return result;
   }
 }
