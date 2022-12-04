@@ -14,9 +14,16 @@ export class Bot {
   private messageService: MessageService;
 
   private presences: Array<ActivitiesOptions> = [
-    {name: 'YOU... aahahahaaa', type: 'WATCHING'},
+    {name: 'YOU', type: 'WATCHING'},
     {name: '👁👃👁', type: 'WATCHING'},
-    {name: '👀', type: 'WATCHING'}
+    {name: '👁👁', type: 'WATCHING'},
+    {name: '👀', type: 'WATCHING'},
+    {name: '🗿', type: 'WATCHING'},
+    {name: 'to YOU', type: 'LISTENING'},
+    {name: '👂', type: 'LISTENING'},
+    {name: '🎧', type: 'LISTENING'},
+    {name: 'myself', type: 'PLAYING'},
+    {name: 'with myself', type: 'PLAYING'}
   ];
 
   constructor(
@@ -38,15 +45,20 @@ export class Bot {
     });
     this.client.on('interactionCreate', (interaction: Interaction) => {
       this.interactionService.handleInteraction(interaction);
+      this.randomizePresence();
     });
     this.client.on('ready', () => {
-      this.client.user!.setPresence({
-        status: 'online',
-        activities: [
-          this.presences[Math.floor(Math.random() * this.presences.length)],
-        ]
-      });
+      this.randomizePresence();
     });
     return this.client.login(this.token);
+  }
+
+  private randomizePresence(): void {
+    this.client.user!.setPresence({
+      status: 'online',
+      activities: [
+        this.presences[Math.floor(Math.random() * this.presences.length)],
+      ]
+    });
   }
 }
