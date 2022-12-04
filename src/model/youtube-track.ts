@@ -49,7 +49,7 @@ export class YoutubeTrack implements YoutubeTrackData {
         .once('spawn', () => {
           demuxProbe(stream)
           .then((probe: { stream: any; type: any; }) => {
-            resolve(createAudioResource(probe.stream, { metadata: this, inputType: probe.type}))
+            resolve(createAudioResource(probe.stream, { metadata: this, inputType: probe.type, inlineVolume: true }));
           }).catch(onError);
         })
         .catch(onError);

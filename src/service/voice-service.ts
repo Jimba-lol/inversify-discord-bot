@@ -135,10 +135,20 @@ export class VoiceService {
         }
       });
       subscription.enqueue(track);
-      interaction.reply(`Enqueued **${track.title} - ${track.url}**`);
+      interaction.editReply(`Enqueued **${track.title}\n${track.url}**`);
     } catch (err) {
       console.warn(err);
-      interaction.followUp('An error has occurred while trying to play the track.');
+      interaction.editReply('An error has occurred while trying to play the track.');
+    }
+  }
+
+  public setSubscriptionVolume(interaction: CommandInteraction) {
+    const subscription = this.subscriptions.get(interaction.guildId!);
+    if (!subscription) {
+      interaction.reply('<:angryVergil:470440004234117132> I\'m not even in voice.');
+    } else {
+      const vol = Math.floor(interaction.options.get('level')!.value! as number);
+      interaction.reply(`Volume set to ${subscription.setVolume(vol)}`);
     }
   }
 

@@ -11,6 +11,7 @@ import { PauseCommand } from './command/pause-command';
 import { ResumeCommand } from './command/resume-command';
 import { ShowQueueCommand } from './command/show-queue-command';
 import { SkipCommand } from './command/skip-command';
+import { VolumeCommand } from './command/volume-command';
 
 @injectable()
 export class CommandService {
@@ -21,9 +22,10 @@ export class CommandService {
     @inject(SYMBOLS.LeaveCommand) leaveCommand: LeaveCommand,
     @inject(SYMBOLS.PlayCommand) playCommand: PlayCommand,
     @inject(SYMBOLS.PauseCommand) pauseCommand: PauseCommand,
-    @inject(SYMBOLS.ResumeCommand)resumeCommand: ResumeCommand,
-    @inject(SYMBOLS.ShowQueueCommand)showQueueCommand: ShowQueueCommand,
-    @inject(SYMBOLS.SkipCommand)skipCommand: SkipCommand
+    @inject(SYMBOLS.ResumeCommand) resumeCommand: ResumeCommand,
+    @inject(SYMBOLS.ShowQueueCommand) showQueueCommand: ShowQueueCommand,
+    @inject(SYMBOLS.SkipCommand) skipCommand: SkipCommand,
+    @inject(SYMBOLS.VolumeCommand) volumeCommand: VolumeCommand
   ) {
     this.commands.push(joinCommand);
     this.commands.push(leaveCommand);
@@ -32,6 +34,7 @@ export class CommandService {
     this.commands.push(resumeCommand);
     this.commands.push(showQueueCommand);
     this.commands.push(skipCommand);
+    this.commands.push(volumeCommand);
   }
 
   /**

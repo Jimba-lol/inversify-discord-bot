@@ -1,3 +1,5 @@
+import { VolumeCommand } from "./service/command/volume-command";
+
 export const SYMBOLS = {
   Bot: Symbol('Bot'),
   Client: Symbol('Client'),
@@ -19,5 +21,6 @@ export const SYMBOLS = {
   PauseCommand: Symbol('PauseCommand'),
   ResumeCommand: Symbol('ResumeCommand'),
   ShowQueueCommand: Symbol('ShowQueueCommand'),
-  SkipCommand: Symbol('SkipCommand')
+  SkipCommand: Symbol('SkipCommand'),
+  VolumeCommand: Symbol('VolumeCommand')
 }

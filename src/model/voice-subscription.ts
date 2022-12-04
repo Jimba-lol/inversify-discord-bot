@@ -25,6 +25,7 @@ const wait = promisify(setTimeout);
   public queue: YoutubeTrack[];
   public queueLock = false;
   public readyLock = false;
+  private volume: number = 0.20;
 
   public constructor(voiceConnection: VoiceConnection) {
     this.voiceConnection = voiceConnection;
@@ -124,6 +125,16 @@ const wait = promisify(setTimeout);
   }
 
   /**
+   * Sets the volume for the subscription.
+   * @param volume is an integer from 0 to 200
+   */
+  public setVolume(volume: number): number {
+    const newVolume = volume / 100;
+    this.volume = newVolume;
+    return newVolume * 100;
+  }
+
+  /**
    * Attempts to play a Track from the queue.
    */
   private async processQueue(): Promise<void> {
@@ -139,6 +150,7 @@ const wait = promisify(setTimeout);
     try {
       // Attempt to convert the Track into an AudioResource (i.e. start streaming the video)
       const resource = await nextTrack.createAudioResource();
+      resource.volume.setVolume(this.volume);
       this.audioPlayer.play(resource);
       this.queueLock = false;
     } catch (error) {
