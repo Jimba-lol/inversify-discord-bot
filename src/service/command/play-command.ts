@@ -26,8 +26,9 @@ export class PlayCommand implements Command {
 
   execute = async (interaction: CommandInteraction) => {
     try {
-      interaction.deferReply();
-      this.voiceService.playTrack(interaction);
+      interaction.deferReply().then(() => {
+        this.voiceService.playTrack(interaction);
+      });
     } catch(e) {
       if (typeof e === 'string') {
         interaction.reply(e);
