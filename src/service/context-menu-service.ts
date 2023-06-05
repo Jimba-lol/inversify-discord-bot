@@ -1,5 +1,5 @@
 import { ContextInteraction } from './context-menu/_context-interaction';
-import { ContextMenuInteraction } from 'discord.js';
+import { ContextMenuCommandInteraction } from 'discord.js';
 import { inject, injectable } from 'inversify';
 import { SYMBOLS } from '../symbols';
 import { MockMessage } from './context-menu/mock-message';
@@ -17,7 +17,7 @@ export class ContextMenuService {
     this.contextInteractions.push(highlightMessage);
   }
 
-  public handleInteraction(interaction: ContextMenuInteraction) {
+  public handleInteraction(interaction: ContextMenuCommandInteraction) {
     const contextInteraction = this.contextInteractions.find((ci) => ci.data.name === interaction.commandName);
     if (contextInteraction) { contextInteraction.execute(interaction) };
   }

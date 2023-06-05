@@ -150,7 +150,7 @@ const wait = promisify(setTimeout);
     try {
       // Attempt to convert the Track into an AudioResource (i.e. start streaming the video)
       const resource = await nextTrack.createAudioResource();
-      resource.volume.setVolume(this.volume);
+      resource.volume!.setVolume(this.volume);
       this.audioPlayer.play(resource);
       this.queueLock = false;
     } catch (error) {

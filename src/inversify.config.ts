@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { Container } from 'inversify';
 import { SYMBOLS } from './symbols';
 
-import { Client, ClientOptions, Intents } from 'discord.js';
+import { Client, ClientOptions, GatewayIntentBits } from 'discord.js';
 
 import { Bot } from './bot';
 import { MessageService } from './service/message-service';
@@ -24,9 +24,9 @@ import { VolumeCommand } from './service/command/volume-command';
 let container = new Container();
 let clientOptions: ClientOptions = {
   intents: [
-    Intents.FLAGS.GUILDS,
-    Intents.FLAGS.GUILD_MESSAGES,
-    Intents.FLAGS.GUILD_VOICE_STATES
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildVoiceStates
   ]
 };
 

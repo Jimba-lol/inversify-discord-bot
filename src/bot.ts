@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
 import { SYMBOLS } from './symbols';
 
-import { Client, Message, Interaction, ActivitiesOptions } from 'discord.js';
+import { Client, Message, Interaction, ActivitiesOptions, ActivityType } from 'discord.js';
 
 import { MessageService } from './service/message-service';
 import { InteractionService } from './service/interaction-service';
@@ -14,16 +14,16 @@ export class Bot {
   private messageService: MessageService;
 
   private presences: Array<ActivitiesOptions> = [
-    {name: 'YOU', type: 'WATCHING'},
-    {name: '👁👃👁', type: 'WATCHING'},
-    {name: '👁👁', type: 'WATCHING'},
-    {name: '👀', type: 'WATCHING'},
-    {name: '🗿', type: 'WATCHING'},
-    {name: 'to YOU', type: 'LISTENING'},
-    {name: '👂', type: 'LISTENING'},
-    {name: '🎧', type: 'LISTENING'},
-    {name: 'myself', type: 'PLAYING'},
-    {name: 'with myself', type: 'PLAYING'}
+    {name: 'YOU',         type: ActivityType.Watching},
+    {name: '👁👃👁',      type: ActivityType.Watching},
+    {name: '👁👁',        type: ActivityType.Watching},
+    {name: '👀',          type: ActivityType.Watching},
+    {name: '🗿',          type: ActivityType.Watching},
+    {name: 'to YOU',      type: ActivityType.Listening},
+    {name: '👂',          type: ActivityType.Listening},
+    {name: '🎧',          type: ActivityType.Listening},
+    {name: 'myself',      type: ActivityType.Playing},
+    {name: 'with myself', type: ActivityType.Playing}
   ];
 
   constructor(

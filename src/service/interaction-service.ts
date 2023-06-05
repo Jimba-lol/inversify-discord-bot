@@ -1,4 +1,4 @@
-import { CommandInteraction, Interaction, ContextMenuInteraction } from 'discord.js';
+import { CommandInteraction, Interaction, ContextMenuCommandInteraction } from 'discord.js';
 import { inject, injectable } from 'inversify';
 import { SYMBOLS } from '../symbols';
 import { CommandService } from './command-service';
@@ -20,8 +20,8 @@ export class InteractionService {
   public handleInteraction(interaction: Interaction) {
     if (interaction.isCommand()) {
       this.commandService.handleCommand(interaction as CommandInteraction);
-    } else if (interaction.isContextMenu()) {
-      this.contextMenuService.handleInteraction(interaction as ContextMenuInteraction);
+    } else if (interaction.isContextMenuCommand()) {
+      this.contextMenuService.handleInteraction(interaction as ContextMenuCommandInteraction);
     }
   }
 }

@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
 import { ContextInteraction } from './_context-interaction';
 import { ApplicationCommandType } from 'discord-api-types/v10';
-import { ContextMenuInteraction, Message, MessageEmbed, TextBasedChannel } from 'discord.js';
+import { ContextMenuCommandInteraction, Message, Embed, TextBasedChannel } from 'discord.js';
 import { ContextMenuCommandBuilder, EmbedBuilder } from '@discordjs/builders';
 import { SYMBOLS } from '../../symbols';
 
@@ -17,12 +17,12 @@ export class HighlightMessage implements ContextInteraction {
   data = new ContextMenuCommandBuilder()
     .setName('Highlight')
     .setType(ApplicationCommandType.Message);
-  
-  execute = async (interaction: ContextMenuInteraction) => {
+
+  execute = async (interaction: ContextMenuCommandInteraction) => {
     // FIXME: Need to implement a DB and save GuildID -> highlightChannelId associations instead of hard-coding.
     const highlightChannelId = this.highlightChannelId;
     const highlightChannel: TextBasedChannel = interaction.guild!.channels.cache
-      .find(channel => channel.id === highlightChannelId && channel.isText()) as TextBasedChannel;
+      .find(channel => channel.id === highlightChannelId && channel.isTextBased()) as TextBasedChannel;
 
     if (highlightChannel) {
       interaction.channel!.messages.fetch(interaction.targetId).then((targetMessage) => {
@@ -65,13 +65,12 @@ export class HighlightMessage implements ContextInteraction {
       result.setAuthor({ name: message.author.username });
     }
 
-    message.embeds.forEach((embed: MessageEmbed, index: number) => {
-      // TODO: embed.type is deprecated. This works for now.
-      if (!result.data.image && embed.type === 'image') { result.setImage(embed.url); }
+    message.embeds.forEach((embed: Embed, _index: number) => {
+      if (!result.data.image /*&& embed.type === 'image'*/) { result.setImage(embed.url); }
     });
 
     message.attachments.forEach((attachment) => {
-      if (!result.data.image && attachment.contentType?.startsWith('image')) { 
+      if (!result.data.image && attachment.contentType?.startsWith('image')) {
         result.setImage(attachment.url);
       } else if (attachment.url && attachment.url.length > 0) {
         description += `\n${attachment.url}`;
