@@ -17,9 +17,9 @@ export class ContextMenuService {
     this.contextInteractions.push(highlightMessage);
   }
 
-  public handleInteraction(interaction: ContextMenuCommandInteraction) {
+  public async handleInteraction(interaction: ContextMenuCommandInteraction) {
     const contextInteraction = this.contextInteractions.find((ci) => ci.data.name === interaction.commandName);
-    if (contextInteraction) { contextInteraction.execute(interaction) };
+    if (contextInteraction) { contextInteraction.execute(interaction).catch((e) => console.log(e)) };
   }
 
   public getContextInteractions(): Array<ContextInteraction> {

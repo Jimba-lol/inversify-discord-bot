@@ -30,18 +30,22 @@ export class HighlightMessage implements ContextInteraction {
           return react.users.cache.size < react.count;
         });
         if (!isAlreadyHighlighted) {
-          highlightChannel.send({ embeds: [this.embedBuilder(targetMessage).toJSON()] });
-          targetMessage.react('🌟');
+          highlightChannel.send(
+            { embeds: [this.embedBuilder(targetMessage).toJSON()] }
+          ).catch((e) => console.log(e));;
+          targetMessage.react('🌟').catch((e) => console.log(e));
           interaction.reply({
             content: `[Message](${targetMessage.url}) from **${targetMessage.author.username}** highlighted!`,
             ephemeral: false
-          });
+          }).catch((e) => console.log(e));
         } else {
           interaction.reply({
             content: `[Message](${targetMessage.url}) from **${targetMessage.author.username}** has already been highlighted!`,
             ephemeral: true
-          });
+          }).catch((e) => console.log(e));
         }
+      }).catch((e) => {
+        console.log(e);
       });
     } else {
       interaction.reply({ content: 'No highlight channel has been set up.', ephemeral: true });

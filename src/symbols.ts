@@ -1,12 +1,10 @@
-import { VolumeCommand } from "./service/command/volume-command";
-
 export const SYMBOLS = {
   Bot: Symbol('Bot'),
   Client: Symbol('Client'),
   Token: Symbol('Token'),
   HighlightChannelId: Symbol('HighlightChannelId'),
 
-  CommandService: Symbol('CommandService'),
+  ChatCommandService: Symbol('ChatCommandService'),
   ContextMenuService: Symbol('ContextMenuService'),
   InteractionService: Symbol('InteractionService'),
   MessageService: Symbol('MessageService'),

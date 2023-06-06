@@ -3,10 +3,10 @@ import { CommandInteraction, GuildMember } from 'discord.js';
 import { injectable, inject } from 'inversify';
 import { SYMBOLS } from '../../symbols';
 import { VoiceService } from '../voice-service';
-import { Command } from './_command';
+import { ChatCommand } from './_chat-command';
 
 @injectable()
-export class ResumeCommand implements Command {
+export class VolumeCommand implements ChatCommand {
   private voiceService: VoiceService;
   constructor(
     @inject(SYMBOLS.VoiceService) voiceService: VoiceService
@@ -15,10 +15,18 @@ export class ResumeCommand implements Command {
   }
 
   data = new SlashCommandBuilder()
-    .setName('resume')
-    .setDescription('OfficerBeepsky will resume the paused track for you.');
+    .setName('volume')
+    .setDescription('OfficerBeepsky will skip the current track for you.')
+    .addNumberOption((option) =>
+      option
+        .setName('level')
+        .setDescription('Number from 0 to 400')
+        .setRequired(true)
+        .setMinValue(0)
+        .setMaxValue(400)
+    );
 
   execute = async (interaction: CommandInteraction) => {
-    this.voiceService.resumeTrack(interaction);
+    this.voiceService.setSubscriptionVolume(interaction);
   }
 };
