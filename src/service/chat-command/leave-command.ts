@@ -3,10 +3,10 @@ import { CommandInteraction } from 'discord.js';
 import { injectable, inject } from 'inversify';
 import { SYMBOLS } from '../../symbols';
 import { VoiceService } from '../voice-service';
-import { Command } from './_command';
+import { ChatCommand } from './_chat-command';
 
 @injectable()
-export class LeaveCommand implements Command {
+export class LeaveCommand implements ChatCommand {
   private voiceService: VoiceService;
   constructor(
     @inject(SYMBOLS.VoiceService) voiceService: VoiceService

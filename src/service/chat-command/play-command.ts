@@ -3,10 +3,10 @@ import { CommandInteraction, GuildMember } from 'discord.js';
 import { injectable, inject } from 'inversify';
 import { SYMBOLS } from '../../symbols';
 import { VoiceService } from '../voice-service';
-import { Command } from './_command';
+import { ChatCommand } from './_chat-command';
 
 @injectable()
-export class PlayCommand implements Command {
+export class PlayCommand implements ChatCommand {
   private voiceService: VoiceService;
   constructor(
     @inject(SYMBOLS.VoiceService) voiceService: VoiceService
@@ -17,7 +17,7 @@ export class PlayCommand implements Command {
   data = new SlashCommandBuilder()
     .setName('play')
     .setDescription('OfficerBeepsky will play a fun sound for you')
-    .addStringOption((option) => 
+    .addStringOption((option) =>
       option
         .setName('url')
         .setDescription('Either a YouTube URL or the name of the audio file you want to play')

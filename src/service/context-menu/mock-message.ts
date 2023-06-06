@@ -1,7 +1,7 @@
 import { injectable } from 'inversify';
 import { ContextInteraction } from './_context-interaction';
 import { ApplicationCommandType } from 'discord-api-types/v10';
-import { ContextMenuInteraction } from 'discord.js';
+import { ContextMenuCommandInteraction } from 'discord.js';
 import { ContextMenuCommandBuilder } from '@discordjs/builders';
 
 @injectable()
@@ -9,8 +9,8 @@ export class MockMessage implements ContextInteraction {
   data = new ContextMenuCommandBuilder()
     .setName('Mock')
     .setType(ApplicationCommandType.Message);
-  
-  execute = async (interaction: ContextMenuInteraction) => {
+
+  execute = async (interaction: ContextMenuCommandInteraction) => {
     interaction.channel!.messages.fetch(interaction.targetId).then((res) => {
       let result: string = '<:mock:510964804014571530> ';
       [...res.content].forEach((e, i) => {

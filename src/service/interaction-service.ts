@@ -1,27 +1,27 @@
-import { CommandInteraction, Interaction, ContextMenuInteraction } from 'discord.js';
+import { CommandInteraction, Interaction, ContextMenuCommandInteraction } from 'discord.js';
 import { inject, injectable } from 'inversify';
 import { SYMBOLS } from '../symbols';
-import { CommandService } from './command-service';
+import { ChatCommandService } from './chat-command-service';
 import { ContextMenuService } from './context-menu-service';
 
 @injectable()
 export class InteractionService {
-  commandService: CommandService;
+  chatCommandService: ChatCommandService;
   contextMenuService: ContextMenuService;
 
   constructor(
     @inject(SYMBOLS.ContextMenuService) contextMenuService: ContextMenuService,
-    @inject(SYMBOLS.CommandService) commandService: CommandService
+    @inject(SYMBOLS.ChatCommandService) commandService: ChatCommandService
   ) {
     this.contextMenuService = contextMenuService;
-    this.commandService = commandService;
+    this.chatCommandService = commandService;
   }
 
   public handleInteraction(interaction: Interaction) {
-    if (interaction.isCommand()) {
-      this.commandService.handleCommand(interaction as CommandInteraction);
-    } else if (interaction.isContextMenu()) {
-      this.contextMenuService.handleInteraction(interaction as ContextMenuInteraction);
+    if (interaction.isChatInputCommand()) {
+      this.chatCommandService.handleChatCommand(interaction as CommandInteraction).catch((e) => console.log(e));
+    } else if (interaction.isContextMenuCommand()) {
+      this.contextMenuService.handleInteraction(interaction as ContextMenuCommandInteraction).catch((e) => console.log(e));
     }
   }
 }

@@ -1,12 +1,12 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, GuildMember } from 'discord.js';
+import { CommandInteraction } from 'discord.js';
 import { injectable, inject } from 'inversify';
 import { SYMBOLS } from '../../symbols';
 import { VoiceService } from '../voice-service';
-import { Command } from './_command';
+import { ChatCommand } from './_chat-command';
 
 @injectable()
-export class ShowQueueCommand implements Command {
+export class JoinCommand implements ChatCommand {
   private voiceService: VoiceService;
   constructor(
     @inject(SYMBOLS.VoiceService) voiceService: VoiceService
@@ -15,10 +15,12 @@ export class ShowQueueCommand implements Command {
   }
 
   data = new SlashCommandBuilder()
-    .setName('queue')
-    .setDescription('OfficerBeepsky will print out the queue for you.');
+    .setName('join')
+    .setDescription('OfficerBeepsky will join your voice channel');
 
   execute = async (interaction: CommandInteraction) => {
-    this.voiceService.showQueue(interaction);
+    this.voiceService.joinVoice(interaction)
+      .then(() => interaction.reply(":fire:<:hell:490044821843738624>:fire:"))
+      .catch((rejection: string) => interaction.reply(rejection));
   }
 };

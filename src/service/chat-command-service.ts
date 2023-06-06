@@ -3,19 +3,19 @@ import { SYMBOLS } from '../symbols';
 
 import { CommandInteraction } from 'discord.js';
 
-import { JoinCommand } from './command/join-command';
-import { Command } from './command/_command';
-import { LeaveCommand } from './command/leave-command';
-import { PlayCommand } from './command/play-command';
-import { PauseCommand } from './command/pause-command';
-import { ResumeCommand } from './command/resume-command';
-import { ShowQueueCommand } from './command/show-queue-command';
-import { SkipCommand } from './command/skip-command';
-import { VolumeCommand } from './command/volume-command';
+import { JoinCommand } from './chat-command/join-command';
+import { ChatCommand } from './chat-command/_chat-command';
+import { LeaveCommand } from './chat-command/leave-command';
+import { PlayCommand } from './chat-command/play-command';
+import { PauseCommand } from './chat-command/pause-command';
+import { ResumeCommand } from './chat-command/resume-command';
+import { ShowQueueCommand } from './chat-command/show-queue-command';
+import { SkipCommand } from './chat-command/skip-command';
+import { VolumeCommand } from './chat-command/volume-command';
 
 @injectable()
-export class CommandService {
-  commands: Array<Command> = [];
+export class ChatCommandService {
+  commands: Array<ChatCommand> = [];
 
   constructor(
     @inject(SYMBOLS.JoinCommand) joinCommand: JoinCommand,
@@ -41,12 +41,12 @@ export class CommandService {
    * Handles slash commands.
    * @param interaction The slash command we're handling.
    */
-  public async handleCommand(interaction: CommandInteraction) {
+  public async handleChatCommand(interaction: CommandInteraction) {
     const command = this.commands.find(command => interaction.commandName === command.data.name);
-    if (command) { command.execute(interaction); }
+    if (command) { command.execute(interaction).catch((e) => console.log(e)); }
   }
 
-  public getCommands(): Array<Command> {
+  public getChatCommands(): Array<ChatCommand> {
     return this.commands;
   }
 }

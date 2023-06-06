@@ -3,10 +3,10 @@ import { CommandInteraction, GuildMember } from 'discord.js';
 import { injectable, inject } from 'inversify';
 import { SYMBOLS } from '../../symbols';
 import { VoiceService } from '../voice-service';
-import { Command } from './_command';
+import { ChatCommand } from './_chat-command';
 
 @injectable()
-export class PauseCommand implements Command {
+export class ResumeCommand implements ChatCommand {
   private voiceService: VoiceService;
   constructor(
     @inject(SYMBOLS.VoiceService) voiceService: VoiceService
@@ -15,10 +15,10 @@ export class PauseCommand implements Command {
   }
 
   data = new SlashCommandBuilder()
-    .setName('pause')
-    .setDescription('OfficerBeepsky will pause the current track for you.');
+    .setName('resume')
+    .setDescription('OfficerBeepsky will resume the paused track for you.');
 
   execute = async (interaction: CommandInteraction) => {
-    this.voiceService.pauseTrack(interaction);
+    this.voiceService.resumeTrack(interaction);
   }
 };
