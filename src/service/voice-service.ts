@@ -54,7 +54,7 @@ export class VoiceService {
     if (!subscription) {
       interaction.reply('<:angryVergil:470440004234117132> I\'m not even in voice.');
     } else {
-      const current = 
+      const current =
         (subscription.audioPlayer.state.status === AudioPlayerStatus.Idle)
           ? 'Nothing is currently playing'
           : `Currently playing **${(subscription.audioPlayer.state.resource as AudioResource<YoutubeTrack>).metadata.title}**`;
@@ -97,7 +97,7 @@ export class VoiceService {
   }
 
   // Will most likely want to rehaul this and the helper method.
-  // Will want to create new type 'FileTrack' which can 
+  // Will want to create new type 'FileTrack' which can
   public playTrack(interaction: CommandInteraction): void {
     const url = interaction.options.get('url')!.value! as string;
     const subscription = this.subscriptions.get(interaction.guildId!);
@@ -114,7 +114,7 @@ export class VoiceService {
   // may want to remove awaits. try to approach this in a different way.
   // obv. this will still need to be async, though.
   private async playTrackHelper(
-        interaction: CommandInteraction, 
+        interaction: CommandInteraction,
         subscription: VoiceSubscription, url: string): Promise<void> {
     await entersState(subscription.voiceConnection, VoiceConnectionStatus.Ready, 20e3)
     .catch((err) => {
