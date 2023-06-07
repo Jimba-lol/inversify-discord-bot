@@ -6,8 +6,8 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-
 # Compiled JS
+build/
 src/*.js
 src/*.map
 src/**/*.js

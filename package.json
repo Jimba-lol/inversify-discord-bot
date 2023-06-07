@@ -4,8 +4,8 @@
   "description": "My new Discord Bot",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "register-commands": "node src/register-commands.js",
+    "start": "node build/index.js",
+    "register-commands": "node build/register-commands.js",
     "build": "tsc -p tsconfig.json",
     "watch": "tsc -p tsconfig.json -w",
     "test": "mocha -r ts-node/register \"tests/**/*.spec.ts\""

@@ -19,7 +19,9 @@
     "emitDecoratorMetadata": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "outDir": "./build",
+    "rootDir": "./src"
   },
   "exclude": [
     "node_modules"
