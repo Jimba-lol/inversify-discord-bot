@@ -8,47 +8,92 @@ import { getInfo } from 'ytdl-core';
  * Written by Amish Shah, Antonio Roman, and Noel (AKA 'iCrawl')
  */
 export class YoutubeTrack implements YoutubeTrackData {
-  public readonly url: string;
-  public readonly title: string;
-  public readonly onStart: () => void;
-  public readonly onFinish: () => void;
-  public readonly onError: (error: Error) => void;
+  private _url: string;
+  private _startSeconds: number;
+  private _title: string;
+  private _onStart: () => void;
+  private _onFinish: () => void;
+  private _onError: (error: Error) => void;
+
+  public get url() { return this._url }
+  public get startSeconds() { return this._startSeconds }
+  public get title() { return this._title }
+  public get onStart() { return this._onStart }
+  public get onFinish() { return this._onFinish }
+  public get onError() { return this._onError }
 
   constructor({ url, title, onStart, onFinish, onError} : YoutubeTrackData) {
-    this.url = url;
-    this.title = title;
-    this.onStart = onStart;
-    this.onFinish = onFinish;
-    this.onError = onError;
+    this._url = url;
+    this._startSeconds = 0;
+    this.processUrlForTimestamp(url);
+
+    this._title = title;
+    this._onStart = onStart;
+    this._onFinish = onFinish;
+    this._onError = onError;
+  }
+
+  private processUrlForTimestamp(url: string): void {
+    const urlComponents = url.split('&');
+    this._url = urlComponents.shift()!;
+    urlComponents.forEach((urlComponent) => {
+      if (urlComponent.startsWith('t=')) {
+        urlComponent = urlComponent.substring(2); // remove 't='
+        this._startSeconds = this.ytTimestampToSeconds(urlComponent);
+      }
+    });
+  }
+
+  /**
+   *
+   * @param timestamp string of form '1h11m11s' or '11m11s', etc.
+   * @returns number of seconds
+   */
+  private ytTimestampToSeconds(timestamp: string): number {
+    let seconds = 0;
+
+    if (timestamp.endsWith('s')) {
+      timestamp = timestamp.substring(0, timestamp.length - 1);
+    }
+
+    if (timestamp.includes('h')) {
+      const split = timestamp.split('h');
+      seconds += +split[0] * 3600;
+      timestamp = split[1];
+    }
+    if (timestamp.includes('m')) {
+      const split = timestamp.split('m');
+      seconds += +split[0] * 60;
+      timestamp = split[1];
+    }
+
+    seconds += +timestamp;
+    return seconds;
   }
 
   public createAudioResource(): Promise<AudioResource<YoutubeTrack>> {
+    let ytFlags: any = { output: '-', quiet: true }
+    if (this._startSeconds) {
+      ytFlags.downloadSections = `*${this._startSeconds}-inf`;
+    }
+
+    let ytOptions: any = { stdio: ['ignore', 'pipe', 'ignore'] };
+
     return new Promise((resolve, reject) => {
-      const process = ytdl(
-        this.url,
-        {
-          output: "-",
-          quiet: true,
-          // format: 'bestaudio[ext=webm+acodec=opus+asr=48000]/bestaudio',
-          // limitRate: '100K'
-        },
-        { stdio: ['ignore', 'pipe', 'ignore']}
-      );
+      const process = ytdl(this.url, ytFlags, ytOptions);
       if (!process.stdout) {
         reject(new Error('No stdout'));
         return;
       }
       const stream = process.stdout;
       const onError = (error: Error) => {
-        if (!process.killed) 
-          process.kill();
+        if (!process.killed) { process.kill(); }
         stream.resume();
         reject(error);
       };
       process
         .once('spawn', () => {
-          demuxProbe(stream)
-          .then((probe: { stream: any; type: any; }) => {
+          demuxProbe(stream).then((probe: { stream: any; type: any; }) => {
             resolve(createAudioResource(probe.stream, { metadata: this, inputType: probe.type, inlineVolume: true }));
           }).catch(onError);
         })
@@ -67,18 +112,17 @@ export class YoutubeTrack implements YoutubeTrackData {
   public static async from(url: string, methods: Pick<YoutubeTrack, 'onStart' | 'onFinish' | 'onError'>): Promise<YoutubeTrack> {
     const info = await getInfo(url);
 
-    // The methods are wrapped so that we can ensure that they are only called once.
-    const wrappedMethods = {
+    const selfDestructingMethods = {
       onStart() {
-        wrappedMethods.onStart = () => {};
+        selfDestructingMethods.onStart = () => {};
         methods.onStart();
       },
       onFinish() {
-        wrappedMethods.onFinish = () => {};
+        selfDestructingMethods.onFinish = () => {};
         methods.onFinish();
       },
       onError(error: Error) {
-        wrappedMethods.onError = () => {};
+        selfDestructingMethods.onError = () => {};
         methods.onError(error);
       },
     };
@@ -86,7 +130,7 @@ export class YoutubeTrack implements YoutubeTrackData {
     return new YoutubeTrack({
       title: info.videoDetails.title,
       url,
-      ...wrappedMethods,
+      ...selfDestructingMethods,
     });
   }
 }
