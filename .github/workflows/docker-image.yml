@@ -6,15 +6,18 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  NEW_TAG: $(date +%s)
+
 jobs:
   build:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag inversify-discord-bot:$(date +%s)
+      run: docker build . --file Dockerfile --tag inversify-discord-bot:$NEW_TAG
   deploy:
     runs-on: self-hosted
     steps:
     - name: Run the Docker image
-      run: docker run -itd inversify-discord-bot:$(date +%s)
+      run: docker run -itd inversify-discord-bot:$NEW_TAG
