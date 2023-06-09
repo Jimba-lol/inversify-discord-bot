@@ -6,18 +6,20 @@ on:
   pull_request:
     branches: [ "main" ]
 
-env:
-  NEW_TAG: $(date +%s)
-
 jobs:
+  set-tag:
+    runs-on: self-hosted
+    steps:
+    - name: Set the current Docker Image tag
+      run: echo "CURRENT_TAG=$(date +%s)" >> ${GITHUB_ENV}
   build:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag inversify-discord-bot:$NEW_TAG
+      run: docker build . --file Dockerfile --tag inversify-discord-bot:$CURRENT_TAG
   deploy:
     runs-on: self-hosted
     steps:
     - name: Run the Docker image
-      run: docker run -itd inversify-discord-bot:$NEW_TAG
+      run: docker run -itd inversify-discord-bot:$CURRENT_TAG
