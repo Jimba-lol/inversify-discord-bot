@@ -11,17 +11,17 @@ jobs:
     runs-on: self-hosted
     steps:
     - name: Set the current Docker Image tag
-      run: echo "CURRENT_TAG=$(date +%s)" >> ${GITHUB_ENV}
+      run: export IDB_TAG=$(date +%s)
   build:
     runs-on: self-hosted
     needs: set-tag
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag inversify-discord-bot:$CURRENT_TAG
+      run: docker build . --file Dockerfile --tag inversify-discord-bot:$IDB_TAG
   deploy:
     runs-on: self-hosted
     needs: build
     steps:
     - name: Run the Docker image
-      run: docker run -itd inversify-discord-bot:$CURRENT_TAG
+      run: docker run -itd inversify-discord-bot:$IDB_TAG
