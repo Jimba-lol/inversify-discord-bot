@@ -14,12 +14,14 @@ jobs:
       run: echo "CURRENT_TAG=$(date +%s)" >> ${GITHUB_ENV}
   build:
     runs-on: self-hosted
+    needs: set-tag
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag inversify-discord-bot:$CURRENT_TAG
   deploy:
     runs-on: self-hosted
+    needs: build
     steps:
     - name: Run the Docker image
       run: docker run -itd inversify-discord-bot:$CURRENT_TAG
